@@ -1,4 +1,5 @@
-//Contains ticket-related functions handling creation and approval of reimbursement tickets:
+
+//Contains product-related functions handling creation and retrieval of products:
 
 const AWS = require('aws-sdk');
 const uuid = require ('uuid');
@@ -8,6 +9,19 @@ AWS.config.update({
 });
 
 const docClient = new AWS.DynamoDB.DocumentClient();
+
+//Function to add new product to database for display/sale on the site: (Stretch goal)
+function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCount, Name, Price) {
+    return docClient.put({
+        TableName: "Products",
+        Item: {
+            "ProductNumber": ProductNumber,
+            "Description": Description,
+            "Image": Image,
+            "InStock": InStock,
+            "InventoryCount": InventoryCount,
+            "Name": Name,
+            "Price": Price
 
 //ADD PRODUCT TO CART
 function addItemToCart(cartID, productID, randomUserID) {
@@ -21,6 +35,12 @@ function addItemToCart(cartID, productID, randomUserID) {
     }).promise();
 }
 
+
+// Testing addNewProduct function: WORKS!
+// addNewProduct(uuid.v4(), 'a brilliant 50-watt light bulb', 'lightbulbpic@lightbulb.com', true, 6, 'light bulb', 5).then(data => {
+//     console.log(data);
+//     console.log("New product added successfully");
+
 //RETRIEVE PRODUCT ID TO ADD TO CARTS TABLE
 function retrieveProductByID(productID) {
     return docClient.get({
@@ -31,133 +51,109 @@ function retrieveProductByID(productID) {
     }).promise();
 }
 
-//Function to add reimbursement ticket to database for review:
-function newTicket(ticket_id, $amount, description, username) {
-    return docClient.put({
-        TableName: "Tickets",
-        Item: {
-            "ticket_id": ticket_id,
-            "$amount": $amount,
-            "description": description,
-            "username": username,
-            "status": "pending"
-        }
-    }).promise();
-}
-
-// Testing newTicket function: WORKS!
-// newTicket(uuid.v4(), 545.89, 'week1 car rental', 'parkjimin').then(data => {
-//     console.log(data);
-//     console.log("New ticket added successfully");
-// }).catch(err => {
-//     console.error(err);
-// });
 
 
-//Function to retrieve all tickets by status:
-function retrieveTicketsByStatus(status) {
-    return docClient.query({
-        TableName: "Tickets",
-        IndexName: "status-index",
-        KeyConditionExpression: "#b = :value",
-        ExpressionAttributeNames: {
-            "#b": "status"
-        },
-        ExpressionAttributeValues: {
-            ":value": status
-        }
-    }).promise();
-}
-
-//Testing retrieveTicketsByStatus function: WORKS!
-// retrieveTicketsByStatus('pending').then(data => {
-//     const pendingTicketsQueue = [];
-//     pendingTicketsQueue.push(data);
-//     console.log(pendingTicketsQueue);
-//     console.log("Tickets gathered successfully");
-// }).catch(err => {
-//     console.error(err);
-// });
-
-
-//Function to retrieve tickets by ticketID (so managers can process):
-function retrieveTicketByTicketID(ticket_id) {
+// //Function to retrieve all products for viewing on the site:
+function viewAllProducts() {
     const params = {
-        TableName: "Tickets",
+        TableName: 'Products'
+    }
+    return docClient.scan(params).promise();
+}
+
+// Testing viewAllProducts function: WORKS!
+// viewAllProducts().then(data => {
+//     console.log(data);
+//     console.log("Products gathered successfully");
+
+// }).catch(err => {
+//     console.error(err);
+// });
+
+
+//*****************************************
+//Function to retrieve products by product#:
+function retrieveProductByProductNumber(ProductNumber) {
+    const params = {
+        TableName: "Products",
         Key: {
-            "ticket_id": ticket_id
+            "ProductNumber": ProductNumber
+
+
         }
     }
     return docClient.get(params).promise();
 }
 
-//Testing retrieveTicketByTicketID function: WORKS!
-// retrieveTicketByTicketID(502).then(data => {
-//     console.log(data);
-//     console.log("Ticket gathered successfully");
-// }).catch(err => {
-//     console.error(err);
-// });
 
 
-function updateTicketStatusByTicketID(ticket_id, updatedStatus) {
+
+//Function to update Products by product#:
+function updateProductDescriptionByProductNumber(ProductNumber, newDescription) {
     return docClient.update({
-        TableName: "Tickets",
+        TableName: "Products",
         Key: {
-            "ticket_id": ticket_id
+            "ProductNumber": ProductNumber
         },
-        UpdateExpression: 'set #t = :value',
+        UpdateExpression: 'set #a = :value',
         ExpressionAttributeNames: {
-            '#t': 'status'
+            '#a': 'Description'
         },
         ExpressionAttributeValues: {
-            ':value': updatedStatus
+            ':value': newDescription
+
+
         }
     }).promise();
 };
 
-//Testing updateTicketStatusByTicketID function: WORKS!
-// updateTicketStatusByTicketID(502, 'approved').then(data => {
+
+//Testing updateProductDescriptionByProductNumber function: WORKS!
+// updateProductDescriptionByProductNumber('2', 'this is an updated description for this product').then(data => {
 //     console.log(data)
-//     console.log("Ticket updated successfully");
+//     console.log("Product updated successfully");
+
+
 // }).catch(err => {
 //     console.error(err);
 // });
 
 
-//Function for employees to retrieve their tickets by their username
-function retrieveTicketsByUsername(username) {
-    return docClient.query({
-        TableName: "Tickets",
-        IndexName: "username-index",
-        KeyConditionExpression: "#s = :value",
+
+function updateProductImageByProductNumber(ProductNumber, newImage) {
+    return docClient.update({
+        TableName: "Products",
+        Key: {
+            "ProductNumber": ProductNumber
+        },
+        UpdateExpression: 'set #b = :value',
         ExpressionAttributeNames: {
-            "#s": "username"
+            '#b': 'Image'
         },
         ExpressionAttributeValues: {
-            ":value": username
+            ':value': newImage
         }
     }).promise();
-}
+};
 
-//Testing retrieveTicketsByUsername function: WORKS!
-// retrieveTicketsByUsername('parkjimin').then(data => {
-//     const employeeTicketsQueue = [];
-//     employeeTicketsQueue.push(data);
-//     console.log(employeeTicketsQueue);
-//     console.log("Tickets gathered successfully");
+//Testing updateProductImageByTicketID function: WORKS!
+// updateProductDescriptionByProductNumber('2', 'this is an updated description for this product').then(data => {
+//     console.log(data)
+//     console.log("Product updated successfully");
 // }).catch(err => {
 //     console.error(err);
 // });
+
     
 
 
 module.exports = {
+
+    addNewProduct,
+    viewAllProducts,
+    retrieveProductByProductNumber,
+    updateProductDescriptionByProductNumber
     addItemToCart,
     retrieveProductByID,
-    newTicket,
-    retrieveTicketsByStatus,
-    retrieveTicketByTicketID,
-    updateTicketStatusByTicketID,
-    retrieveTicketsByUsername
+
 };
