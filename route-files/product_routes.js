@@ -6,8 +6,38 @@ const router = express.Router();
 const jwt = require('../utility/jwts');
 const uuid = require ('uuid');
 
-const ticketDao = require('../dao-files/ticket_dao');
+const productDao = require('../dao-files/product_dao');
 
+//ADD TO CART
+router.post('/cart', async (req, res) => {
+    try {
+        const data = await productDao.retrieveProductByID(req.body.productID);
+        if (data.Item) { 
+            try {
+                await productDao.addItemToCart(uuid.v4(), data.Item.productID, uuid.v4());
+                res.statusCode = 201; 
+                res.send({
+                    "message": "Successfully added item to cart."
+                });
+            } catch (err) {
+                res.statusCode = 500;
+                res.send({
+                    "message": err
+                });
+            }
+        } else {
+            res.statusCode = 401;
+            res.send({
+                "message": `Product with ID ${req.body.productID} doesn't exist.`
+            })
+        }
+    } catch(err) {
+        res.statusCode = 500;
+        res.send({
+            "message": err
+        });
+    }
+});
 
 //Endpoint for employees to submit new tickets into the system:
 router.post('/tickets/employee/submit', async (req, res) => {

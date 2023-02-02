@@ -9,6 +9,28 @@ AWS.config.update({
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
+//ADD PRODUCT TO CART
+function addItemToCart(cartID, productID, randomUserID) {
+    return docClient.put({
+        TableName: 'carts',
+        Item: {
+            "cartID": cartID,
+            "productID": productID,
+            "randomUserID": randomUserID,
+        }
+    }).promise();
+}
+
+//RETRIEVE PRODUCT ID TO ADD TO CARTS TABLE
+function retrieveProductByID(productID) {
+    return docClient.get({
+        TableName: 'products',
+        Key: {
+            "productID": productID
+        }
+    }).promise();
+}
+
 //Function to add reimbursement ticket to database for review:
 function newTicket(ticket_id, $amount, description, username) {
     return docClient.put({
@@ -131,6 +153,8 @@ function retrieveTicketsByUsername(username) {
 
 
 module.exports = {
+    addItemToCart,
+    retrieveProductByID,
     newTicket,
     retrieveTicketsByStatus,
     retrieveTicketByTicketID,
