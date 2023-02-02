@@ -22,6 +22,9 @@ function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCoun
             "InventoryCount": InventoryCount,
             "Name": Name,
             "Price": Price
+        }
+    }).promise();
+}
 
 //ADD PRODUCT TO CART
 function addItemToCart(cartID, productID, randomUserID) {
@@ -152,7 +155,7 @@ module.exports = {
     addNewProduct,
     viewAllProducts,
     retrieveProductByProductNumber,
-    updateProductDescriptionByProductNumber
+    updateProductDescriptionByProductNumber,
     addItemToCart,
     retrieveProductByID,
 
