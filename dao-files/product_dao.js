@@ -1,3 +1,4 @@
+
 //Contains product-related functions handling creation and retrieval of products:
 
 const AWS = require('aws-sdk');
@@ -21,17 +22,35 @@ function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCoun
             "InventoryCount": InventoryCount,
             "Name": Name,
             "Price": Price
+
+//ADD PRODUCT TO CART
+function addItemToCart(cartID, productID, randomUserID) {
+    return docClient.put({
+        TableName: 'carts',
+        Item: {
+            "cartID": cartID,
+            "productID": productID,
+            "randomUserID": randomUserID,
         }
     }).promise();
 }
+
 
 // Testing addNewProduct function: WORKS!
 // addNewProduct(uuid.v4(), 'a brilliant 50-watt light bulb', 'lightbulbpic@lightbulb.com', true, 6, 'light bulb', 5).then(data => {
 //     console.log(data);
 //     console.log("New product added successfully");
-// }).catch(err => {
-//     console.error(err);
-// });
+
+//RETRIEVE PRODUCT ID TO ADD TO CARTS TABLE
+function retrieveProductByID(productID) {
+    return docClient.get({
+        TableName: 'products',
+        Key: {
+            "productID": productID
+        }
+    }).promise();
+}
+
 
 
 // //Function to retrieve all products for viewing on the site:
@@ -46,9 +65,11 @@ function viewAllProducts() {
 // viewAllProducts().then(data => {
 //     console.log(data);
 //     console.log("Products gathered successfully");
+
 // }).catch(err => {
 //     console.error(err);
 // });
+
 
 //*****************************************
 //Function to retrieve products by product#:
@@ -57,18 +78,14 @@ function retrieveProductByProductNumber(ProductNumber) {
         TableName: "Products",
         Key: {
             "ProductNumber": ProductNumber
+
+
         }
     }
     return docClient.get(params).promise();
 }
 
-//Testing retrieveTicketByTicketID function: WORKS!
-// retrieveProductByProductNumber('2').then(data => {
-//     console.log(data);
-//     console.log("Product gathered successfully");
-// }).catch(err => {
-//     console.error(err);
-// });
+
 
 
 //Function to update Products by product#:
@@ -84,17 +101,23 @@ function updateProductDescriptionByProductNumber(ProductNumber, newDescription) 
         },
         ExpressionAttributeValues: {
             ':value': newDescription
+
+
         }
     }).promise();
 };
+
 
 //Testing updateProductDescriptionByProductNumber function: WORKS!
 // updateProductDescriptionByProductNumber('2', 'this is an updated description for this product').then(data => {
 //     console.log(data)
 //     console.log("Product updated successfully");
+
+
 // }).catch(err => {
 //     console.error(err);
 // });
+
 
 
 function updateProductImageByProductNumber(ProductNumber, newImage) {
@@ -121,45 +144,16 @@ function updateProductImageByProductNumber(ProductNumber, newImage) {
 //     console.error(err);
 // });
 
-
-
-
-
-
-
-
-
-
-// //Function for employees to retrieve their tickets by their username
-// function retrieveTicketsByUsername(username) {
-//     return docClient.query({
-//         TableName: "Tickets",
-//         IndexName: "username-index",
-//         KeyConditionExpression: "#s = :value",
-//         ExpressionAttributeNames: {
-//             "#s": "username"
-//         },
-//         ExpressionAttributeValues: {
-//             ":value": username
-//         }
-//     }).promise();
-// }
-
-// //Testing retrieveTicketsByUsername function: 
-// // retrieveTicketsByUsername('parkjimin').then(data => {
-// //     const employeeTicketsQueue = [];
-// //     employeeTicketsQueue.push(data);
-// //     console.log(employeeTicketsQueue);
-// //     console.log("Tickets gathered successfully");
-// // }).catch(err => {
-// //     console.error(err);
-// // });
     
 
 
 module.exports = {
+
     addNewProduct,
     viewAllProducts,
     retrieveProductByProductNumber,
     updateProductDescriptionByProductNumber
+    addItemToCart,
+    retrieveProductByID,
+
 };

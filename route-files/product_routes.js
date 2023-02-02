@@ -8,6 +8,36 @@ const uuid = require ('uuid');
 
 const productDao = require('../dao-files/product_dao');
 
+//ADD TO CART
+router.post('/cart', async (req, res) => {
+    try {
+        const data = await productDao.retrieveProductByID(req.body.productID);
+        if (data.Item) { 
+            try {
+                await productDao.addItemToCart(uuid.v4(), data.Item.productID, uuid.v4());
+                res.statusCode = 201; 
+                res.send({
+                    "message": "Successfully added item to cart."
+                });
+            } catch (err) {
+                res.statusCode = 500;
+                res.send({
+                    "message": err
+                });
+            }
+        } else {
+            res.statusCode = 401;
+            res.send({
+                "message": `Product with ID ${req.body.productID} doesn't exist.`
+            })
+        }
+    } catch(err) {
+        res.statusCode = 500;
+        res.send({
+            "message": err
+        });
+    }
+});
 
 //Endpoint for admins to submit new products into the system for display/purchase:
 // router.put('/products', async (req, res) => {
