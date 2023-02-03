@@ -11,11 +11,10 @@ router.get('/', (req, res) => {
     res.send("Welcome to the home page!");
 });
 
-
 //CUSTOMER LOGIN
 router.post('/login', async (req, res) => {
-    const username = req.body.Username;
-    const password = req.body.Password;
+    const username = req.body.username;
+    const password = req.body.password;
 
     const data = await customerDao.retrieveUserName(username);
     const userItem = data.Item;
@@ -24,8 +23,9 @@ router.post('/login', async (req, res) => {
         if (userItem.password === password) {
             res.send({
                 "message": "You have successfully logged in.",
-                "token": jwt.newToken(userItem.Username, userItem.Role)
-//To get 'payload' for token
+                "token": jwt.newToken(userItem.username, userItem.role)
+                
+// To get 'payload' for token
             });
         } else {
             res.statusCode = 400;
@@ -42,25 +42,25 @@ router.post('/login', async (req, res) => {
 });
 
 
-// //Endpoint for customers to register a new account:
-// router.post('/employee/register', async (req, res) => {
-//     const username = req.body.username;
-//     const password = req.body.password;
+//Endpoint for customers to register a new account:
+router.post('/employee/register', async (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
 
-// //Check if user with username already exists
-//     const data = await customerDao.retrieveUserName(username);
-//     if (data.Item) { 
-//         res.statusCode = 400;
-//         res.send({
-//             "message": "This username is already in use. Please choose a different username and try again."
-//         })
-//     } else {
-//         await userDao.registerNewUser(username, password);
-//         res.send({
-//             "message": "New account created successfully. Please log in with your new credentials to continue."
-//         })
-//     }
-//     });
+//Check if user with username already exists
+    const data = await customerDao.retrieveUserName(username);
+    if (data.Item) { 
+        res.statusCode = 400;
+        res.send({
+            "message": "This username is already in use. Please choose a different username and try again."
+        })
+    } else {
+        await customerDao.registerNewUser(username, password);
+        res.send({
+            "message": "New account created successfully. Please log in with your new credentials to continue."
+        })
+    }
+    });
     
 
 module.exports = router;

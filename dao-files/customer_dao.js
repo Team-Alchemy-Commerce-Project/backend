@@ -7,13 +7,12 @@ AWS.config.update({
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-
-//RETRIEVE USER NAME
-function retrieveUserName(Username) {
+//Function to retrieve Username from Customer Table in DB:
+function retrieveUserName(username) {
     return docClient.get({
         TableName: "Customers",
         Key: {
-            "Username": Username
+            "username": username
         }
     }).promise();
 }
@@ -24,17 +23,17 @@ function retrieveUserName(Username) {
 // })
 
 
-// //Function to register a new user account:
-// function registerNewUser(username, password) {
-//     return docClient.put({
-//         TableName: "Customers",
-//         Item: {
-//             "username": username,
-//             "password": password,
-//             "role": "employee"
-//         }
-//     }).promise();
-// }
+//Function to register a new user account:
+function registerNewUser(username, password) {
+    return docClient.put({
+        TableName: "Customers",
+        Item: {
+            "username": username,
+            "password": password,
+            "role": "employee"
+        }
+    }).promise();
+}
 
 // //Testing 'registerNewUser' function: 
 // // registerNewUser('kimnamjoon', 'wildflower39').then(data => {
@@ -46,5 +45,5 @@ function retrieveUserName(Username) {
 
 
 module.exports = {
-    retrieveUserName,
+    retrieveUserName, registerNewUser
 }
