@@ -8,6 +8,7 @@ const uuid = require ('uuid');
 
 const productDao = require('../dao-files/product_dao');
 
+
 //ADD TO CART
 router.post('/cart', async (req, res) => {
     try {
@@ -39,169 +40,325 @@ router.post('/cart', async (req, res) => {
     }
 });
 
-//Endpoint for admins to submit new products into the system for display/purchase:
-// router.put('/products', async (req, res) => {
-//     try {
-// //         const authorizationHeader = req.headers.authorization;
-// // //Gets the token from the authorization header to check for role: admin
-// //         const token = authorizationHeader.split(" ")[1];
-// //         const tokenPayload = await jwt.verifyToken(token);
 
-//         // if (tokenPayload.role === 'admin') {
-//             await productDao.addNewProduct(uuid.v4(), req.body.Description, req.body.Image, req.body.InStock, req.body.InventoryCount, req.body.Name, req.body.Price);
-//                 res.send({
-//                     "message": "New product successfully added to shop!"
-//                 })
-//         } catch(err) {
-//             if (err.name === 'JsonWebTokenError') {
-//                 res.statusCode = 400;
-//                 res.send({
-//                     "message": "Invalid JsonWebToken."
-//             })
-//         } else if (err.name === 'TypeError') {
-//             res.statusCode = 400;
-//             res.send({
-//                 "message": "No Authorization header provided."
-//             });
-//         } else {
-//             res.statusCode = 500;
-//             //server error
-//             res.send({
-//                 "message": "Something went wrong. Please reload the page and try again. :/"
-//             });
-//         }
-//     }
-// });
-
-
-// //Endpoint for customers to view all products:
-// router.get('/products', async (req, res) => {
-//     try {
-//             let viewProducts = await productDao.viewAllProducts();
-//             if (viewProducts.Items.length > 0) {
-//                     res.send(viewProducts);
-//             } else {
-//                 res.send('The store is empty now. New items coming soon!')
-//             }
-//         }  catch(err) {
-//                 if (err.name === 'TypeError') {
-//                     res.statusCode = 400;
-//                     res.send({
-//                         "message": "No Authorization header provided."
-//                 });
-//                 } else {
-//                     res.statusCode = 500;
-//                     //server error
-//                     res.send({
-//                         "message": "Something went wrong. Please reload the page and try again. :/"
-//                 });
-//         }
-//     }
-// });
-
-
-// // //Endpoint for admin to update products:
-// router.patch('/products', async (req, res) => {
-//     try {
-//         const token = req.headers.authorization.split(" ")[1];
+//ADMIN ADD NEW PRODUCTS TO STORE
+router.put('/products', async (req, res) => {
+    try {
+//         const authorizationHeader = req.headers.authorization;
+// //Gets the token from the authorization header to check for role: admin
+//         const token = authorizationHeader.split(" ")[1];
 //         const tokenPayload = await jwt.verifyToken(token);
 
-//         const data = await productDao.retrieveProductByProductNumber(ProductNumber);
-//         const productItem = data.Item;
-
-//         if (tokenPayload.role === 'admin') {
-//             if (productItem) {
-//                 productDao.updateTicketStatusByTicketID(req.body.ticket_id, req.body.updatedStatus);
-//                 res.send({
-//                     "message": "Ticket updated successfully!"
-//                 })
-//             } else {
-//                 res.send({
-//                     "message": "Ticket status may only be updated to 'approved' or 'denied'."
-//                 })
-//             }
-//         } else {
-//             res.send({
-//                 "message": "Error: A ticket must be in 'pending' status to be processed as either 'approved' or 'denied'."
-//             })
-//         }
-//         } else {
-//             res.send({
-//                 "message": "This ticket ID is not in 'pending' status. Please check ticket ID and try again."
-//             })
-//         }
-//         } else {
-//             res.send({
-//                 "message": "You are not authorized for this action. If you are a manager, please log into your manager account to make changes to tickets."
-//             })
-//         }
-//     } catch(err) {
-//         if (err.name === 'JsonWebTokenError') {
-//             res.statusCode = 400;
-//             res.send({
-//                 "message": "Invalid JsonWebToken."
-//             })
-//         } else if (err.name === 'TypeError') {
-//             res.statusCode = 400;
-//             res.send({
-//                 "message": "No Authorization header provided."
-//             });
-//         } else {
-//             res.statusCode = 500;
-//             //server error
-//             res.send({
-//                 "message": "Something went wrong. Please reload the page and try again. :/"
-//             });
-//         }
-//     }
-// });
+        // if (tokenPayload.role === 'admin') {
+            await productDao.addNewProduct(uuid.v4(), req.body.Description, req.body.Image, req.body.InStock, req.body.InventoryCount, req.body.Name, req.body.Price);
+                res.send({
+                    "message": "New product successfully added to shop!"
+                })
+        } catch(err) {
+            if (err.name === 'JsonWebTokenError') {
+                res.statusCode = 400;
+                res.send({
+                    "message": "Invalid JsonWebToken."
+            })
+        } else if (err.name === 'TypeError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "No Authorization header provided."
+            });
+        } else {
+            res.statusCode = 500;
+            //server error
+            res.send({
+                "message": "Something went wrong. Please reload the page and try again. :/"
+            });
+        }
+    }
+});
 
 
-// //Endpoint for employees to view their tickets:
-// router.get('/tickets/employee/view', async (req, res) => {
-//     try {
-//         const token = req.headers.authorization.split(" ")[1];
-//         const tokenPayload = await jwt.verifyToken(token);
+//VIEW ALL PRODUCTS
+router.get('/products', async (req, res) => {
+    try {
+            let viewProducts = await productDao.viewAllProducts();
+            if (viewProducts.Items.length > 0) {
+                    res.send(viewProducts);
+            } else {
+                res.send('The store is empty now. New items coming soon!')
+            }
+        }  catch(err) {
+                if (err.name === 'TypeError') {
+                    res.statusCode = 400;
+                    res.send({
+                        "message": "No Authorization header provided."
+                });
+                } else {
+                    res.statusCode = 500;
+                    //server error
+                    res.send({
+                        "message": "Something went wrong. Please reload the page and try again. :/"
+                });
+        }
+    }
+});
 
-//         if (tokenPayload.role === 'employee') {
-//             let viewingTickets = await productDao.retrieveTicketsByUsername(req.body.username);
-//             const username = req.body.username;
-// //Creates queue for employee tickets to be added to so they can be viewed
-//             const viewingTicketsQueue = [];
-//             viewingTicketsQueue.push(viewingTickets);
-//             if (viewingTickets.Items.length > 0) {
-//                     res.send(viewingTicketsQueue);
-//             } else {
-//                 res.send({
-//                     "message": `${username} has no tickets in this system.`
-//                 })
-//             }
-//         } else {
-//             res.statusCode = 401;
-//             res.send({
-//                 "message": "You are not authorized for this action. If you are a manager, please log into your manager account to make changes to employee reimbursement tickets."
-//             })
-//         }
-//     } catch(err) {
-//         if (err.name === 'JsonWebTokenError') {
-//             res.statusCode = 400;
-//             res.send({
-//                 "message": "Invalid JsonWebToken."
-//             })
-//         } else if (err.name === 'TypeError') {
-//             res.statusCode = 400;
-//             res.send({
-//                 "message": "No Authorization header provided."
-//             });
-//         } else {
-//             res.statusCode = 500;
-//             //server error
-//             res.send({
-//                 "message": "Something went wrong. Please reload the page and try again. :/"
-//             });
-//         }
-//     }
-// });
+
+//ADMIN UPDATE PRODUCT DESCRIPTION BY PRODUCT NUMBER
+router.patch('/products/:id/description', async (req, res) => {
+    try {
+        // const token = req.headers.authorization.split(" ")[1];
+        // const tokenPayload = await jwt.verifyToken(token);
+
+        const productNumber = req.body.ProductNumber;
+        const data = await productDao.retrieveProductByProductNumber(productNumber);
+        const productItem = data.Item;
+
+        // if (tokenPayload.role === 'admin') {
+            if (productItem) {
+                productDao.updateProductDescriptionByProductNumber(req.body.ProductNumber, req.body.newDescription);
+                res.send({
+                    "message": "Product description updated successfully!"
+                })
+            } else {
+                res.send({
+                    "message": "There are no products with this product number."
+                })
+            }
+    } catch(err) {
+        if (err.name === 'JsonWebTokenError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "Invalid JsonWebToken."
+            })
+        } else if (err.name === 'TypeError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "No Authorization header provided."
+            });
+        } else {
+            res.statusCode = 500;
+            //server error
+            res.send({
+                "message": "Something went wrong. Please reload the page and try again. :/"
+            });
+        };
+    }
+});
+
+
+//ADMIN UPDATE PRODUCT IMAGE BY PRODUCT NUMBER
+router.patch('/products/:id/image', async (req, res) => {
+    try {
+        // const token = req.headers.authorization.split(" ")[1];
+        // const tokenPayload = await jwt.verifyToken(token);
+
+        const productNumber = req.body.ProductNumber;
+        const data = await productDao.retrieveProductByProductNumber(productNumber);
+        const productItem = data.Item;
+
+        // if (tokenPayload.role === 'admin') {
+            if (productItem) {
+                productDao.updateProductImageByProductNumber(req.body.ProductNumber, req.body.newImage);
+                res.send({
+                    "message": "Product image updated successfully!"
+                })
+            } else {
+                res.send({
+                    "message": "There are no products with this product number."
+                })
+            }
+    } catch(err) {
+        if (err.name === 'JsonWebTokenError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "Invalid JsonWebToken."
+            })
+        } else if (err.name === 'TypeError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "No Authorization header provided."
+            });
+        } else {
+            res.statusCode = 500;
+            //server error
+            res.send({
+                "message": "Something went wrong. Please reload the page and try again. :/"
+            });
+        };
+    }
+});
+
+
+//ADMIN UPDATE PRODUCT INSTOCK BY PRODUCT NUMBER
+router.patch('/products/:id/stock', async (req, res) => {
+    try {
+        // const token = req.headers.authorization.split(" ")[1];
+        // const tokenPayload = await jwt.verifyToken(token);
+
+        const productNumber = req.body.ProductNumber;
+        const data = await productDao.retrieveProductByProductNumber(productNumber);
+        const productItem = data.Item;
+
+        // if (tokenPayload.role === 'admin') {
+            if (productItem) {
+                productDao.updateProductInStockByProductNumber(req.body.ProductNumber, req.body.newInStock);
+                res.send({
+                    "message": "Product stock information updated successfully!"
+                })
+            } else {
+                res.send({
+                    "message": "There are no products with this product number."
+                })
+            }
+    } catch(err) {
+        if (err.name === 'JsonWebTokenError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "Invalid JsonWebToken."
+            })
+        } else if (err.name === 'TypeError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "No Authorization header provided."
+            });
+        } else {
+            res.statusCode = 500;
+            //server error
+            res.send({
+                "message": "Something went wrong. Please reload the page and try again. :/"
+            });
+        };
+    }
+});
+
+
+//ADMIN UPDATE PRODUCT INVENTORY COUNT BY PRODUCT NUMBER
+router.patch('/products/:id/inventory', async (req, res) => {
+    try {
+        // const token = req.headers.authorization.split(" ")[1];
+        // const tokenPayload = await jwt.verifyToken(token);
+
+        const productNumber = req.body.ProductNumber;
+        const data = await productDao.retrieveProductByProductNumber(productNumber);
+        const productItem = data.Item;
+
+        // if (tokenPayload.role === 'admin') {
+            if (productItem) {
+                productDao.updateProductInventoryCountByProductNumber(req.body.ProductNumber, req.body.newInventoryCount);
+                res.send({
+                    "message": "Product inventory count updated successfully!"
+                })
+            } else {
+                res.send({
+                    "message": "There are no products with this product number."
+                })
+            }
+    } catch(err) {
+        if (err.name === 'JsonWebTokenError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "Invalid JsonWebToken."
+            })
+        } else if (err.name === 'TypeError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "No Authorization header provided."
+            });
+        } else {
+            res.statusCode = 500;
+            //server error
+            res.send({
+                "message": "Something went wrong. Please reload the page and try again. :/"
+            });
+        };
+    }
+});
+
+
+//ADMIN UPDATE PRODUCT NAME BY PRODUCT NUMBER
+router.patch('/products/:id/name', async (req, res) => {
+    try {
+        // const token = req.headers.authorization.split(" ")[1];
+        // const tokenPayload = await jwt.verifyToken(token);
+
+        const productNumber = req.body.ProductNumber;
+        const data = await productDao.retrieveProductByProductNumber(productNumber);
+        const productItem = data.Item;
+
+        // if (tokenPayload.role === 'admin') {
+            if (productItem) {
+                productDao.updateProductNameByProductNumber(req.body.ProductNumber, req.body.newName);
+                res.send({
+                    "message": "Product name updated successfully!"
+                })
+            } else {
+                res.send({
+                    "message": "There are no products with this product number."
+                })
+            }
+    } catch(err) {
+        if (err.name === 'JsonWebTokenError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "Invalid JsonWebToken."
+            })
+        } else if (err.name === 'TypeError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "No Authorization header provided."
+            });
+        } else {
+            res.statusCode = 500;
+            //server error
+            res.send({
+                "message": "Something went wrong. Please reload the page and try again. :/"
+            });
+        };
+    }
+});
+
+
+//ADMIN UPDATE PRODUCT PRICE BY PRODUCT NUMBER
+router.patch('/products/:id/price', async (req, res) => {
+    try {
+        // const token = req.headers.authorization.split(" ")[1];
+        // const tokenPayload = await jwt.verifyToken(token);
+
+        const productNumber = req.body.ProductNumber;
+        const data = await productDao.retrieveProductByProductNumber(productNumber);
+        const productItem = data.Item;
+
+        // if (tokenPayload.role === 'admin') {
+            if (productItem) {
+                productDao.updateProductPriceByProductNumber(req.body.ProductNumber, req.body.newPrice);
+                res.send({
+                    "message": "Product price updated successfully!"
+                })
+            } else {
+                res.send({
+                    "message": "There are no products with this product number."
+                })
+            }
+    } catch(err) {
+        if (err.name === 'JsonWebTokenError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "Invalid JsonWebToken."
+            })
+        } else if (err.name === 'TypeError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "No Authorization header provided."
+            });
+        } else {
+            res.statusCode = 500;
+            //server error
+            res.send({
+                "message": "Something went wrong. Please reload the page and try again. :/"
+            });
+        };
+    }
+});
+
 
 
 
