@@ -8,18 +8,18 @@ AWS.config.update({
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 
-// //Function to retrieve Username from Customer Table in DB:
-// function retrieveUserName(username) {
-//     return docClient.get({
-//         TableName: "Customers",
-//         Key: {
-//             "username": username
-//         }
-//     }).promise();
-// }
+//RETRIEVE USER NAME
+function retrieveUserName(Username) {
+    return docClient.get({
+        TableName: "Customers",
+        Key: {
+            "Username": Username
+        }
+    }).promise();
+}
 
-// // Testing 'retrieveUserName' function: 
-// retrieveUserName('parkjimin').then(data => {
+//TEST RETRIEVEUSERNAME FUNCTION: WORKS!
+// retrieveUserName('1').then(data => {
 //     console.log(data.Item);
 // })
 
@@ -45,6 +45,6 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 // // });
 
 
-// module.exports = {
-//     retrieveUserName, registerNewUser
-// }
+module.exports = {
+    retrieveUserName,
+}

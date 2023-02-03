@@ -10,7 +10,8 @@ AWS.config.update({
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-//Function to add new product to database for display/sale on the site: (Stretch goal)
+
+//ADD NEW PRODUCT TO SITE
 function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCount, Name, Price) {
     return docClient.put({
         TableName: "Products",
@@ -26,6 +27,12 @@ function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCoun
     }).promise();
 }
 
+// TEST ADDNEWPRODUCT FUNCTION: WORKS!
+// addNewProduct(uuid.v4(), 'a brilliant 50-watt light bulb', 'lightbulbpic@lightbulb.com', true, 6, 'light bulb', 5).then(data => {
+//     console.log(data);
+//     console.log("New product added successfully");
+
+
 //ADD PRODUCT TO CART
 function addItemToCart(cartID, productID, randomUserID) {
     return docClient.put({
@@ -39,11 +46,6 @@ function addItemToCart(cartID, productID, randomUserID) {
 }
 
 
-// Testing addNewProduct function: WORKS!
-// addNewProduct(uuid.v4(), 'a brilliant 50-watt light bulb', 'lightbulbpic@lightbulb.com', true, 6, 'light bulb', 5).then(data => {
-//     console.log(data);
-//     console.log("New product added successfully");
-
 //RETRIEVE PRODUCT ID TO ADD TO CARTS TABLE
 function retrieveProductByID(productID) {
     return docClient.get({
@@ -55,8 +57,7 @@ function retrieveProductByID(productID) {
 }
 
 
-
-// //Function to retrieve all products for viewing on the site:
+//VIEW ALL PRODUCTS
 function viewAllProducts() {
     const params = {
         TableName: 'Products'
@@ -64,34 +65,36 @@ function viewAllProducts() {
     return docClient.scan(params).promise();
 }
 
-// Testing viewAllProducts function: WORKS!
+//TEST VIEWALLPRODUCTS FUNCTION: WORKS!
 // viewAllProducts().then(data => {
 //     console.log(data);
 //     console.log("Products gathered successfully");
-
 // }).catch(err => {
 //     console.error(err);
 // });
 
 
-//*****************************************
-//Function to retrieve products by product#:
+//RETRIEVE PRODUCT BY PRODUCT NUMBER
 function retrieveProductByProductNumber(ProductNumber) {
     const params = {
         TableName: "Products",
         Key: {
             "ProductNumber": ProductNumber
-
-
         }
     }
     return docClient.get(params).promise();
 }
 
+//TEST RETRIEVEPRODUCTBYPRODUCTNUMBER FUNCTION: WORKS!
+// retrieveProductByProductNumber("2").then(data => {
+//     console.log(data);
+//     console.log("Product gathered successfully");
+// }).catch(err => {
+//     console.error(err);
+// });
 
 
-
-//Function to update Products by product#:
+//UPDATE PRODUCT DESCRIPTION BY PRODUCT NUMBER
 function updateProductDescriptionByProductNumber(ProductNumber, newDescription) {
     return docClient.update({
         TableName: "Products",
@@ -104,25 +107,20 @@ function updateProductDescriptionByProductNumber(ProductNumber, newDescription) 
         },
         ExpressionAttributeValues: {
             ':value': newDescription
-
-
         }
     }).promise();
 };
 
-
-//Testing updateProductDescriptionByProductNumber function: WORKS!
+//TEST UPDATEPRODUCTDESCRIPTIONBYPRODUCTNUMBER: WORKS!
 // updateProductDescriptionByProductNumber('2', 'this is an updated description for this product').then(data => {
 //     console.log(data)
 //     console.log("Product updated successfully");
-
-
 // }).catch(err => {
 //     console.error(err);
 // });
 
 
-
+//UPDATE PRODUCT IMAGE BY PRODUCT NUMBER
 function updateProductImageByProductNumber(ProductNumber, newImage) {
     return docClient.update({
         TableName: "Products",
@@ -139,24 +137,126 @@ function updateProductImageByProductNumber(ProductNumber, newImage) {
     }).promise();
 };
 
-//Testing updateProductImageByTicketID function: WORKS!
-// updateProductDescriptionByProductNumber('2', 'this is an updated description for this product').then(data => {
+//TEST UPDATEPRODUCTIMAGEBYPRODUCTNUMBER: WORKS!
+// updateProductImageByProductNumber('2', 'updatedemail@email.com').then(data => {
 //     console.log(data)
 //     console.log("Product updated successfully");
 // }).catch(err => {
 //     console.error(err);
 // });
 
-    
+
+function updateProductInStockByProductNumber(ProductNumber, newStockStatus) {
+    return docClient.update({
+        TableName: "Products",
+        Key: {
+            "ProductNumber": ProductNumber
+        },
+        UpdateExpression: 'set #c = :value',
+        ExpressionAttributeNames: {
+            '#c': 'InStock'
+        },
+        ExpressionAttributeValues: {
+            ':value': newStockStatus
+        }
+    }).promise();
+};
+
+//TEST UPDATEPRODUCTINSTOCKBYPRODUCTNUMBER: WORKS!
+// updateProductInStockByProductNumber('2', false).then(data => {
+//     console.log(data)
+//     console.log("Product updated successfully");
+// }).catch(err => {
+//     console.error(err);
+// });
+
+
+function updateProductInventoryCountByProductNumber(ProductNumber, newInventoryCount) {
+    return docClient.update({
+        TableName: "Products",
+        Key: {
+            "ProductNumber": ProductNumber
+        },
+        UpdateExpression: 'set #d = :value',
+        ExpressionAttributeNames: {
+            '#d': 'InventoryCount'
+        },
+        ExpressionAttributeValues: {
+            ':value': newInventoryCount
+        }
+    }).promise();
+};
+
+//TEST UPDATEPRODUCTINVENTORYCOUNTBYPRODUCTNUMBER: WORKS!
+// updateProductInventoryCountByProductNumber('2', 1).then(data => {
+//     console.log(data)
+//     console.log("Product updated successfully");
+// }).catch(err => {
+//     console.error(err);
+// });
+
+
+function updateProductNameByProductNumber(ProductNumber, newName) {
+    return docClient.update({
+        TableName: "Products",
+        Key: {
+            "ProductNumber": ProductNumber
+        },
+        UpdateExpression: 'set #e = :value',
+        ExpressionAttributeNames: {
+            '#e': 'Name'
+        },
+        ExpressionAttributeValues: {
+            ':value': newName
+        }
+    }).promise();
+};
+
+//TEST UPDATEPRODUCTNAMEBYPRODUCTNUMBER: WORKS!
+// updateProductNameByProductNumber('2', 'Mousetrap').then(data => {
+//     console.log(data)
+//     console.log("Product updated successfully");
+// }).catch(err => {
+//     console.error(err);
+// });
+
+function updateProductPriceByProductNumber(ProductNumber, newPrice) {
+    return docClient.update({
+        TableName: "Products",
+        Key: {
+            "ProductNumber": ProductNumber
+        },
+        UpdateExpression: 'set #f = :value',
+        ExpressionAttributeNames: {
+            '#f': 'Price'
+        },
+        ExpressionAttributeValues: {
+            ':value': newPrice
+        }
+    }).promise();
+};
+
+//TEST UPDATEPRODUCTPRICEBYPRODUCTNUMBER: WORKS!
+// updateProductPriceByProductNumber('2', 5.99).then(data => {
+//     console.log(data)
+//     console.log("Product updated successfully");
+// }).catch(err => {
+//     console.error(err);
+// });
+
 
 
 module.exports = {
 
     addNewProduct,
+    addItemToCart,
+    retrieveProductByID,
     viewAllProducts,
     retrieveProductByProductNumber,
     updateProductDescriptionByProductNumber,
-    addItemToCart,
-    retrieveProductByID,
-
+    updateProductImageByProductNumber,
+    updateProductInStockByProductNumber,
+    updateProductInventoryCountByProductNumber,
+    updateProductNameByProductNumber,
+    updateProductPriceByProductNumber
 };
