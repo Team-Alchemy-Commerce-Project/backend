@@ -11,15 +11,41 @@ const productDao = require('../dao-files/product_dao');
 //ADD TO CART
 router.post('/cart', async (req, res) => {
     try {
-        const data = await productDao.retrieveProductByID(req.body.productID);
-        if (data.Item) { 
+        const token = req.headers.authorization.split(' ')[1]; 
+        const payload = await jwt.verifyToken(token);
+        if (payload.username) {
             try {
-                await productDao.addItemToCart(uuid.v4(), data.Item.productID, uuid.v4());
-                res.statusCode = 201; 
-                res.send({
-                    "message": "Successfully added item to cart."
-                });
-            } catch (err) {
+                const data = await productDao.retrieveProductByID(req.body.product_id);
+                if (data.Item) { 
+                    try {
+                        let cartData = await productDao.retrieveItemsInCart(payload.username);
+                        const existingItems = cartData.Item.items;
+                        existingItems.push(data.Item);
+                        try {
+                            await productDao.addItemToCart(payload.username, existingItems);
+                            res.statusCode = 201; 
+                            res.send({
+                                "message": "Successfully added item to cart."
+                            });
+                        } catch (err) {
+                            res.statusCode = 500;
+                            res.send({
+                                "message": err
+                            });  
+                        }                        
+                    } catch (err) {
+                        res.statusCode = 500;
+                        res.send({
+                            "message": err
+                        });  
+                    }
+                } else {
+                    res.statusCode = 401;
+                    res.send({
+                        "message": `Product with ID ${req.body.productID} doesn't exist.`
+                    })
+                }
+            } catch(err) {
                 res.statusCode = 500;
                 res.send({
                     "message": err
@@ -28,14 +54,21 @@ router.post('/cart', async (req, res) => {
         } else {
             res.statusCode = 401;
             res.send({
-                "message": `Product with ID ${req.body.productID} doesn't exist.`
+                "message": `You don't have an account with us yet.`
             })
         }
     } catch(err) {
-        res.statusCode = 500;
-        res.send({
-            "message": err
-        });
+        if (err.name === 'JsonWebTokenError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "Invalid JWT"
+            })
+        } else if (err) {
+            res.statusCode = 500;
+            res.send({
+                "message": "no JWT"
+            });
+        }
     }
 });
 

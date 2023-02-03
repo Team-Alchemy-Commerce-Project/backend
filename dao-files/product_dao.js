@@ -26,35 +26,47 @@ function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCoun
     }).promise();
 }
 
-//ADD PRODUCT TO CART
-function addItemToCart(cartID, productID, randomUserID) {
-    return docClient.put({
-        TableName: 'carts',
-        Item: {
-            "cartID": cartID,
-            "productID": productID,
-            "randomUserID": randomUserID,
-        }
-    }).promise();
-}
-
-
 // Testing addNewProduct function: WORKS!
 // addNewProduct(uuid.v4(), 'a brilliant 50-watt light bulb', 'lightbulbpic@lightbulb.com', true, 6, 'light bulb', 5).then(data => {
 //     console.log(data);
 //     console.log("New product added successfully");
 
-//RETRIEVE PRODUCT ID TO ADD TO CARTS TABLE
-function retrieveProductByID(productID) {
+//GET PRODUCTS IN CART
+function retrieveItemsInCart(username) {
     return docClient.get({
-        TableName: 'products',
+        TableName: 'carts',
         Key: {
-            "productID": productID
+            "username": username
         }
     }).promise();
 }
 
+//ADD PRODUCT TO CART
+function addItemToCart(username, existingItems) {
+    return docClient.update({
+        TableName: 'carts',
+        Key: {
+            "username": username
+        },
+        UpdateExpression: "set #i = :val",
+        ExpressionAttributeNames: {
+            "#i": "items"
+        },
+        ExpressionAttributeValues: {
+            ":val": existingItems
+        }
+    }).promise();
+}
 
+//RETRIEVE PRODUCT ID TO ADD TO CARTS TABLE
+function retrieveProductByID(product_id) {
+    return docClient.get({
+        TableName: 'products',
+        Key: {
+            "product_id": product_id
+        }
+    }).promise();
+}
 
 // //Function to retrieve all products for viewing on the site:
 function viewAllProducts() {
@@ -156,6 +168,7 @@ module.exports = {
     viewAllProducts,
     retrieveProductByProductNumber,
     updateProductDescriptionByProductNumber,
+    retrieveItemsInCart,
     addItemToCart,
     retrieveProductByID,
 
