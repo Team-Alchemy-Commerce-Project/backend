@@ -11,8 +11,7 @@ router.get('/', (req, res) => {
     res.send("Welcome to the home page!");
 });
 
-
-//Endpoint for customers to log in: 
+//CUSTOMER LOGIN
 router.post('/login', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -25,6 +24,7 @@ router.post('/login', async (req, res) => {
             res.send({
                 "message": "You have successfully logged in.",
                 "token": jwt.newToken(userItem.username, userItem.role)
+                
 // To get 'payload' for token
             });
         } else {
