@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 const customerRouter = require('./route-files/customer_routes');
 const productRouter = require('./route-files/product_routes');
+const cartRouter = require('./route-files/cart_routes');
 
 const PORT = 3000;
 const server = express();
@@ -14,6 +15,7 @@ const server = express();
 server.use(bodyParser.json());
 server.use(customerRouter);
 server.use(productRouter);
+server.use(cartRouter);
 
 server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);

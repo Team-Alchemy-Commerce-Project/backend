@@ -32,43 +32,6 @@ function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCoun
 //     console.log(data);
 //     console.log("New product added successfully");
 
-//GET PRODUCTS IN CART
-function retrieveItemsInCart(username) {
-    return docClient.get({
-        TableName: 'carts',
-        Key: {
-            "username": username
-        }
-    }).promise();
-}
-
-//ADD PRODUCT TO CART
-function addItemToCart(username, existingItems) {
-    return docClient.update({
-        TableName: 'carts',
-        Key: {
-            "username": username
-        },
-        UpdateExpression: "set #i = :val",
-        ExpressionAttributeNames: {
-            "#i": "items"
-        },
-        ExpressionAttributeValues: {
-            ":val": existingItems
-        }
-    }).promise();
-}
-
-//RETRIEVE PRODUCT ID TO ADD TO CARTS TABLE
-function retrieveProductByID(product_id) {
-    return docClient.get({
-        TableName: 'products',
-        Key: {
-            "product_id": product_id
-        }
-    }).promise();
-}
-
 //VIEW ALL PRODUCTS
 function viewAllProducts() {
     const params = {
@@ -85,6 +48,15 @@ function viewAllProducts() {
 //     console.error(err);
 // });
 
+//RETRIEVE PRODUCT ID TO ADD TO CARTS TABLE - SAME AS FUNCTION BELOW
+function retrieveProductByID(product_id) {
+    return docClient.get({
+        TableName: 'products',
+        Key: {
+            "product_id": product_id
+        }
+    }).promise();
+}
 
 //RETRIEVE PRODUCT BY PRODUCT NUMBER
 function retrieveProductByProductNumber(ProductNumber) {
@@ -256,17 +228,12 @@ function updateProductPriceByProductNumber(ProductNumber, newPrice) {
 //     console.error(err);
 // });
 
-
-
 module.exports = {
-
     addNewProduct,
-    addItemToCart,
-    retrieveProductByID,
     viewAllProducts,
     retrieveProductByProductNumber,
+    retrieveProductByID,
     updateProductDescriptionByProductNumber,
-    retrieveItemsInCart,
     updateProductImageByProductNumber,
     updateProductInStockByProductNumber,
     updateProductInventoryCountByProductNumber,

@@ -12,7 +12,7 @@ function newToken(username, role) {
         "username": username,
         "role": role
     }, 'thissecretsignsthetoken', {
-        expiresIn: '1d'
+        expiresIn: '10d'
     });
 }
 
