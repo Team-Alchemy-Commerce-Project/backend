@@ -16,8 +16,8 @@ function retrieveItemsInCart(username) {
     }).promise();
 }
 
-//ADD TO CART
-function addItemToCart(username, items) {
+//ADD OR REMOVE CART ITEM
+function updateCart(username, items) {
     return docClient.update({
         TableName: 'carts',
         Key: {
@@ -35,5 +35,5 @@ function addItemToCart(username, items) {
 
 module.exports = {
     retrieveItemsInCart,
-    addItemToCart,
+    updateCart
 }
