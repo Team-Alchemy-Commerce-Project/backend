@@ -16,24 +16,7 @@ function retrieveItemsInCart(username) {
     }).promise();
 }
 
-//ADD FIRST PRODUCT TO CART
-function addFirstItemToCart(username, items) {
-    return docClient.update({
-        TableName: 'carts',
-        Key: {
-            "username": username
-        },
-        UpdateExpression: "set #i = :val",
-        ExpressionAttributeNames: {
-            "#i": "items"
-        },
-        ExpressionAttributeValues: {
-            ":val": items
-        }
-    }).promise();
-}
-
-//ADD DUPLICATE PRODUCT TO CART
+//ADD TO CART
 function addItemToCart(username, items) {
     return docClient.update({
         TableName: 'carts',
@@ -51,7 +34,6 @@ function addItemToCart(username, items) {
 }
 
 module.exports = {
-    addFirstItemToCart,
+    retrieveItemsInCart,
     addItemToCart,
-    retrieveItemsInCart
 }

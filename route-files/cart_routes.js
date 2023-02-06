@@ -54,7 +54,7 @@ router.post('/cart', async (req, res) => {
                         try {
                             const newItems = [];
                             newItems.push( { 'product_id': req.body.product_id, 'quantity': 1} );
-                            await cartDao.addFirstItemToCart(payload.username, newItems);
+                            await cartDao.addItemToCart(payload.username, newItems);
                             res.statusCode = 201; 
                             res.send({
                                 "message": "Successfully created your cart and added this item."
@@ -135,5 +135,9 @@ router.get('/cart', async (req, res) => {
         }
     }
 });
+
+//REMOVE FROM CART
+
+
 
 module.exports = router;
