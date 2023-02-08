@@ -1,0 +1,63 @@
+
+const express = require('express');
+const router = express.Router();
+const bcrypt = require('bcrypt');
+const {registerNewUser, retrieveUserName, retrieveUserEmail} = require('../dao-files/customer_dao');
+
+
+router.post('/register', async (req, res) => {
+
+  try {
+
+    const username = req.body.username;
+    const password = req.body.password;
+    const email = req.body.email;
+    let data = await retrieveUserName(username);
+    const newUser = data.Item;
+    let userEmail = await retrieveUserEmail(email);
+    const checkEmail = userEmail.Items[0]
+
+    if (newUser) {
+
+          res.statusCode = 400;
+          res.send({'message': 'This name is taken, please try again'});
+
+        
+    }    
+    
+     else if (checkEmail){
+
+        res.send('email is taken') 
+      
+        }
+
+  
+   
+      else {
+      const hashPassword = await bcrypt.hash(password, 10);
+      req.body.password = hashPassword;
+      await registerNewUser(req.body.username, req.body.address, req.body.credit_card, req.body.email,
+                            req.body.full_name, req.body.image, req.body.password, req.body.phone);
+
+      res.statusCode = 200;
+      res.send({'message': 'Successfully register'});
+
+   
+     }
+    
+
+  
+ 
+
+  } catch (err){
+
+    res.statusCode = 500;
+    res.send({'message': `${err}`})
+
+  }
+
+
+});
+
+
+module.exports = router;
