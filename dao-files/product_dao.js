@@ -33,7 +33,7 @@ function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCoun
 //     console.log("New product added successfully");
 
 //VIEW ALL PRODUCTS
-function viewAllProducts() {
+function viewAllProducts(name, ) {
     const params = {
         TableName: 'Products'
     }
