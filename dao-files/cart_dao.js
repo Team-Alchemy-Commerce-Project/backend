@@ -33,7 +33,18 @@ function updateCart(username, items) {
     }).promise();
 }
 
+//DELETE USER'S CART AT TIME OF PURCHASE
+function deleteCartByUsername(username) {
+    return docClient.delete({
+        TableName: 'carts',
+        Key: {
+            username
+        }
+    }).promise();
+}
+
 module.exports = {
     retrieveItemsInCart,
-    updateCart
+    updateCart,
+    deleteCartByUsername,
 }

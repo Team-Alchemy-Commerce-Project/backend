@@ -91,10 +91,6 @@ function registerNewUser(username, street_address, city, state, zipcode1, last4d
 //     console.error(err);
 // });
 
-
-
-
-
 module.exports = {
     retrieveUserName, registerNewUser, retrieveUserEmail
 }

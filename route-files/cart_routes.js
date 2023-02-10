@@ -11,22 +11,22 @@ router.post('/cart', async (req, res) => {
         const token = req.headers.authorization.split(' ')[1]; 
         const payload = await jwt.verifyToken(token);
         try {
-            const data = await productDao.retrieveProductByID(req.body.product_id);
+            const data = await productDao.retrieveProductByProductNumber(req.body.product_number);
             if (data.Item) {
                 try {
                     const cartData = await cartDao.retrieveItemsInCart(payload.username);
                     if (typeof cartData.Item !== 'undefined') {
-                        if (cartData.Item.items.find(item => item.product_id === req.body.product_id)) {
+                        if (cartData.Item.items.find(item => item.product_number === req.body.product_number)) {
                             try {
-                                const x = cartData.Item.items.map(e => e.product_id).indexOf(req.body.product_id);
+                                const x = cartData.Item.items.map(e => e.product_number).indexOf(req.body.product_number);
                                 let newQuantity = (cartData.Item.items[x].quantity) + 1;
                                 const existingItemsPlusDupe = cartData.Item.items;
                                 existingItemsPlusDupe.splice(x, 1);
-                                existingItemsPlusDupe.push( { 'product_id': req.body.product_id, 'quantity': newQuantity})
+                                existingItemsPlusDupe.push( { 'product_number': req.body.product_number, 'quantity': newQuantity, 'price': data.Item.price })
                                 await cartDao.updateCart(payload.username, existingItemsPlusDupe);
                                 res.statusCode = 201; 
                                 res.send({
-                                    "message": `Successfully updated the quantity of ${req.body.product_id} in your cart.`
+                                    "message": `Successfully updated the quantity of ${req.body.product_number} in your cart.`
                                 });
                             } catch (err) {
                                 res.statusCode = 500;
@@ -37,7 +37,7 @@ router.post('/cart', async (req, res) => {
                         } else {
                             try {
                                 const existingItemsPlusNew = cartData.Item.items;
-                                existingItemsPlusNew.push( { 'product_id': req.body.product_id, 'quantity': 1} );
+                                existingItemsPlusNew.push( { 'product_number': req.body.product_number, 'quantity': 1, 'price': data.Item.price } );
                                 await cartDao.updateCart(payload.username, existingItemsPlusNew);
                                 res.statusCode = 201; 
                                 res.send({
@@ -53,7 +53,7 @@ router.post('/cart', async (req, res) => {
                     } else {
                         try {
                             const newItems = [];
-                            newItems.push( { 'product_id': req.body.product_id, 'quantity': 1} );
+                            newItems.push( { 'product_number': req.body.product_number, 'quantity': 1, 'price': data.Item.price} );
                             await cartDao.updateCart(payload.username, newItems);
                             res.statusCode = 201; 
                             res.send({
@@ -75,7 +75,7 @@ router.post('/cart', async (req, res) => {
             } else {
                 res.statusCode = 401;
                 res.send({
-                    "message": `Product with ID ${req.body.product_id} doesn't exist.`
+                    "message": `Product with ID ${req.body.product_number} doesn't exist.`
                 })
             }
         } catch(err) {
@@ -142,23 +142,23 @@ router.patch('/cart', async (req, res) => {
         const token = req.headers.authorization.split(' ')[1]; 
         const payload = await jwt.verifyToken(token);
         try {
-            const data = await productDao.retrieveProductByID(req.body.product_id);
+            const data = await productDao.retrieveProductByProductNumber(req.body.product_number);
             if (data.Item) {
                 try {
                     const cartData = await cartDao.retrieveItemsInCart(payload.username);
                     if (cartData.Item.items) {
-                        if (cartData.Item.items.find(item => item.product_id === req.body.product_id)) {
+                        if (cartData.Item.items.find(item => item.product_number === req.body.product_number)) {
                             try {
-                                const x = cartData.Item.items.map(e => e.product_id).indexOf(req.body.product_id);
+                                const x = cartData.Item.items.map(e => e.product_number).indexOf(req.body.product_number);
                                 let newQuantity = (cartData.Item.items[x].quantity) - 1;
                                 const existingItemsMinusDupe = cartData.Item.items;
                                 existingItemsMinusDupe.splice(x, 1);
                                 if (newQuantity > 0) {
-                                    existingItemsMinusDupe.push( { 'product_id': req.body.product_id, 'quantity': newQuantity})
+                                    existingItemsMinusDupe.push( { 'product_number': req.body.product_number, 'quantity': newQuantity, 'price': data.Item.price })
                                     await cartDao.updateCart(payload.username, existingItemsMinusDupe);
                                     res.statusCode = 201; 
                                     res.send({
-                                        "message": `Successfully removed a copy of ${req.body.product_id} from your cart.`
+                                        "message": `Successfully removed a copy of ${req.body.product_number} from your cart.`
                                     });
                                 } else {
                                     if (existingItemsMinusDupe.length === 0) {
@@ -171,7 +171,7 @@ router.patch('/cart', async (req, res) => {
                                         await cartDao.updateCart(payload.username, existingItemsMinusDupe);
                                         res.statusCode = 201; 
                                         res.send({
-                                            "message": `Successfully removed ${req.body.product_id} from your cart.`
+                                            "message": `Successfully removed ${req.body.product_number} from your cart.`
                                         });
                                     }
                                 }
@@ -202,7 +202,7 @@ router.patch('/cart', async (req, res) => {
             } else {
                 res.statusCode = 401;
                 res.send({
-                    "message": `Product with ID ${req.body.product_id} doesn't exist.`
+                    "message": `Product with ID ${req.body.product_number} doesn't exist.`
                 })
             }
         } catch(err) {
