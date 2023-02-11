@@ -4,8 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 //Router imports
-
-const customerRouter = require('./route-files/customer_routes');
+const registerRouter = require('./route-files/register_routes');
+const loginRouter = require('./route-files/login_routes');
 const productRouter = require('./route-files/product_routes');
 const cartRouter = require('./route-files/cart_routes');
 const orderRouter = require('./route-files/order_routes');
@@ -18,7 +18,8 @@ const timestamp = require('unix-timestamp');
 timestamp.round = true;
 
 server.use(bodyParser.json());
-server.use(customerRouter);
+server.use(registerRouter);
+server.use(loginRouter);
 server.use(productRouter);
 server.use(cartRouter);
 server.use(orderRouter);

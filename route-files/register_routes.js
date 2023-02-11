@@ -4,7 +4,6 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const {registerNewUser, retrieveUserName, retrieveUserEmail} = require('../dao-files/customer_dao');
 
-
 router.post('/register', async (req, res) => {
 
   try {

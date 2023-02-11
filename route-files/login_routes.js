@@ -8,8 +8,7 @@ const jwt = require('../utility/jwts');
 
 router.get('/login', async (req, res) => {
 
-
- try {
+try {
 
     const username = req.body.username;
     const password = req.body.password;
