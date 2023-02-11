@@ -13,7 +13,7 @@ const orderRouter = require('./route-files/order_routes');
 
 const PORT = 8080;
 const server = express();
-app.use(cors({
+server.use(cors({
     origin: 'http://127.0.0.1:3000'
 }));
 
