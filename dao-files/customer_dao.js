@@ -83,18 +83,47 @@ function registerNewUser(username, street_address, city, state, zipcode1, last4d
     return docClient.put(params).promise();
 }
 
-//Testing 'registerNewUser' function: WORKS!
-// registerNewUser('kimnamjoon', '123 My Street', 'Orlando', 'FL', 75312, 8521, 0323, 42564, 'thisisanemail@emails.com', 'Kim Namjoon', 'pictureofme@pictures.com', 'thisismypassword123', 9195487521).then(data => {
-//     console.log(data);
-//     console.log("Registration successful!");
-// }).catch(err => {
-//     console.error(err);
-// });
+function updatePasswordByUsername(username, password){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'password'
+        },
+        ExpressionAttributeValues: {
+            ':value': password
+        }
+    }
 
+    return docClient.update(params).promise();
+}
 
+function updatePasswordByUsername(username, password){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'password'
+        },
+        ExpressionAttributeValues: {
+            ':value': password
+        }
+    }
+
+    return docClient.update(params).promise();
+}
 
 
 
 module.exports = {
-    retrieveUserName, registerNewUser, retrieveUserEmail
+    retrieveUserName, 
+    registerNewUser, 
+    retrieveUserEmail, 
+    updatePasswordByUsername
 }

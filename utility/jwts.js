@@ -27,6 +27,13 @@ function verifyToken(token) {
     return jwt.verify(token, 'thissecretsignsthetoken'); 
 }
 
+//Function to decode JWTs
+function decodeJwt(token) {
+    var base64Payload = token.split(".")[1];
+    var payloadBuffer = Buffer.from(base64Payload, "base64");
+    return JSON.parse(payloadBuffer.toString());
+  }
+
 //Test for verifyToken function: WORKS!
 // verifyToken(newToken('user123', 'admin')).then((payload) => {
 //     console.log(payload);
@@ -38,5 +45,6 @@ function verifyToken(token) {
 
 module.exports = {
     newToken,
-    verifyToken
+    verifyToken,
+    decodeJwt
 }
