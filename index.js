@@ -2,6 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 //Router imports
 const registerRouter = require('./route-files/register_routes');
@@ -10,8 +11,11 @@ const productRouter = require('./route-files/product_routes');
 const cartRouter = require('./route-files/cart_routes');
 const orderRouter = require('./route-files/order_routes');
 
-const PORT = 3000;
+const PORT = 8080;
 const server = express();
+app.use(cors({
+    origin: 'http://127.0.0.1:3000'
+}));
 
 const uuid = require('uuid');
 const timestamp = require('unix-timestamp');
