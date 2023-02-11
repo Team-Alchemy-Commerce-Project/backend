@@ -14,7 +14,7 @@ const orderRouter = require('./route-files/order_routes');
 const PORT = 8080;
 const server = express();
 server.use(cors({
-    origin: 'http://127.0.0.1:3000'
+    origin: 'http://localhost:3000'
 }));
 
 const uuid = require('uuid');
