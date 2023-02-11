@@ -14,15 +14,15 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 //ADD NEW PRODUCT TO SITE
 function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCount, Name, Price) {
     return docClient.put({
-        TableName: "Products",
+        TableName: "products",
         Item: {
-            "ProductNumber": ProductNumber,
-            "Description": Description,
-            "Image": Image,
-            "InStock": InStock,
-            "InventoryCount": InventoryCount,
-            "Name": Name,
-            "Price": Price
+            "product_number": ProductNumber,
+            "description": Description,
+            "image": Image,
+            "in_stock": InStock,
+            "inventory_count": InventoryCount,
+            "name": Name,
+            "price": Price
         }
     }).promise();
 }
@@ -35,7 +35,7 @@ function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCoun
 //VIEW ALL PRODUCTS
 function viewAllProducts(name, ) {
     const params = {
-        TableName: 'Products'
+        TableName: 'products'
     }
     return docClient.scan(params).promise();
 }
@@ -48,22 +48,12 @@ function viewAllProducts(name, ) {
 //     console.error(err);
 // });
 
-//RETRIEVE PRODUCT ID TO ADD TO CARTS TABLE - SAME AS FUNCTION BELOW
-function retrieveProductByID(product_id) {
-    return docClient.get({
-        TableName: 'products',
-        Key: {
-            "product_id": product_id
-        }
-    }).promise();
-}
-
 //RETRIEVE PRODUCT BY PRODUCT NUMBER
 function retrieveProductByProductNumber(ProductNumber) {
     const params = {
-        TableName: "Products",
+        TableName: "products",
         Key: {
-            "ProductNumber": ProductNumber
+            "product_number": ProductNumber
         }
     }
     return docClient.get(params).promise();
@@ -81,13 +71,13 @@ function retrieveProductByProductNumber(ProductNumber) {
 //UPDATE PRODUCT DESCRIPTION BY PRODUCT NUMBER
 function updateProductDescriptionByProductNumber(ProductNumber, newDescription) {
     return docClient.update({
-        TableName: "Products",
+        TableName: "products",
         Key: {
-            "ProductNumber": ProductNumber
+            "product_number": ProductNumber
         },
         UpdateExpression: 'set #a = :value',
         ExpressionAttributeNames: {
-            '#a': 'Description'
+            '#a': 'description'
         },
         ExpressionAttributeValues: {
             ':value': newDescription
@@ -107,13 +97,13 @@ function updateProductDescriptionByProductNumber(ProductNumber, newDescription) 
 //UPDATE PRODUCT IMAGE BY PRODUCT NUMBER
 function updateProductImageByProductNumber(ProductNumber, newImage) {
     return docClient.update({
-        TableName: "Products",
+        TableName: "products",
         Key: {
-            "ProductNumber": ProductNumber
+            "product_number": ProductNumber
         },
         UpdateExpression: 'set #b = :value',
         ExpressionAttributeNames: {
-            '#b': 'Image'
+            '#b': 'image'
         },
         ExpressionAttributeValues: {
             ':value': newImage
@@ -132,13 +122,13 @@ function updateProductImageByProductNumber(ProductNumber, newImage) {
 
 function updateProductInStockByProductNumber(ProductNumber, newStockStatus) {
     return docClient.update({
-        TableName: "Products",
+        TableName: "products",
         Key: {
-            "ProductNumber": ProductNumber
+            "product_number": ProductNumber
         },
         UpdateExpression: 'set #c = :value',
         ExpressionAttributeNames: {
-            '#c': 'InStock'
+            '#c': 'in_stock'
         },
         ExpressionAttributeValues: {
             ':value': newStockStatus
@@ -157,13 +147,13 @@ function updateProductInStockByProductNumber(ProductNumber, newStockStatus) {
 
 function updateProductInventoryCountByProductNumber(ProductNumber, newInventoryCount) {
     return docClient.update({
-        TableName: "Products",
+        TableName: "products",
         Key: {
-            "ProductNumber": ProductNumber
+            "product_number": ProductNumber
         },
         UpdateExpression: 'set #d = :value',
         ExpressionAttributeNames: {
-            '#d': 'InventoryCount'
+            '#d': 'inventory_count'
         },
         ExpressionAttributeValues: {
             ':value': newInventoryCount
@@ -182,13 +172,13 @@ function updateProductInventoryCountByProductNumber(ProductNumber, newInventoryC
 
 function updateProductNameByProductNumber(ProductNumber, newName) {
     return docClient.update({
-        TableName: "Products",
+        TableName: "products",
         Key: {
-            "ProductNumber": ProductNumber
+            "product_number": ProductNumber
         },
         UpdateExpression: 'set #e = :value',
         ExpressionAttributeNames: {
-            '#e': 'Name'
+            '#e': 'name'
         },
         ExpressionAttributeValues: {
             ':value': newName
@@ -206,13 +196,13 @@ function updateProductNameByProductNumber(ProductNumber, newName) {
 
 function updateProductPriceByProductNumber(ProductNumber, newPrice) {
     return docClient.update({
-        TableName: "Products",
+        TableName: "products",
         Key: {
-            "ProductNumber": ProductNumber
+            "product_number": ProductNumber
         },
         UpdateExpression: 'set #f = :value',
         ExpressionAttributeNames: {
-            '#f': 'Price'
+            '#f': 'price'
         },
         ExpressionAttributeValues: {
             ':value': newPrice
@@ -232,7 +222,6 @@ module.exports = {
     addNewProduct,
     viewAllProducts,
     retrieveProductByProductNumber,
-    retrieveProductByID,
     updateProductDescriptionByProductNumber,
     updateProductImageByProductNumber,
     updateProductInStockByProductNumber,

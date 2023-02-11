@@ -3,8 +3,12 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const {retrieveUserName} = require('../dao-files/customer_dao')
+const jwt = require('../utility/jwts');
 
-router.get('/login', async (req, res) => {
+
+router.post('/login', async (req, res) => {
+
+try {
 
     const username = req.body.username;
     const password = req.body.password;
@@ -26,9 +30,20 @@ router.get('/login', async (req, res) => {
     } else {
 
         res.statusCode = 200;
-        res.send({'message': 'You are successfully log in'});
+       
+        res.send({'message': 'You are successfully login',
+        "token": jwt.newToken(userName.username, userName.role)  
+    });
+        
+   
+}
 
-    }
+
+} catch (err){
+
+    res.statusCode = 500;
+    res.send({'message': `${err}`})
+}
 
 });
 

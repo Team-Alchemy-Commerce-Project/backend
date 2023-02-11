@@ -101,24 +101,6 @@ function updatePasswordByUsername(username, password){
     return docClient.update(params).promise();
 }
 
-function updatePasswordByUsername(username, password){
-    const params = {
-        TableName: "customers",
-        Key: {
-            username
-        },
-        UpdateExpression: 'set #n = :value',
-        ExpressionAttributeNames: {
-            '#n': 'password'
-        },
-        ExpressionAttributeValues: {
-            ':value': password
-        }
-    }
-
-    return docClient.update(params).promise();
-}
-
 
 
 module.exports = {
