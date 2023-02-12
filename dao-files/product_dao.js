@@ -12,17 +12,16 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 
 //ADD NEW PRODUCT TO SITE
-function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCount, Name, Price) {
+function addNewProduct(product_number, description, image, inventory_count, product_name, price) {
     return docClient.put({
         TableName: "products",
         Item: {
-            "product_number": ProductNumber,
-            "description": Description,
-            "image": Image,
-            "in_stock": InStock,
-            "inventory_count": InventoryCount,
-            "name": Name,
-            "price": Price
+            "product_number": product_number,
+            "description": description,
+            "image": image,
+            "inventory_count": inventory_count,
+            "product_name": product_name,
+            "price": price
         }
     }).promise();
 }
@@ -33,7 +32,7 @@ function addNewProduct(ProductNumber, Description, Image, InStock, InventoryCoun
 //     console.log("New product added successfully");
 
 //VIEW ALL PRODUCTS
-function viewAllProducts(name, ) {
+function viewAllProducts() {
     const params = {
         TableName: 'products'
     }
@@ -119,32 +118,6 @@ function updateProductImageByProductNumber(ProductNumber, newImage) {
 //     console.error(err);
 // });
 
-
-function updateProductInStockByProductNumber(ProductNumber, newStockStatus) {
-    return docClient.update({
-        TableName: "products",
-        Key: {
-            "product_number": ProductNumber
-        },
-        UpdateExpression: 'set #c = :value',
-        ExpressionAttributeNames: {
-            '#c': 'in_stock'
-        },
-        ExpressionAttributeValues: {
-            ':value': newStockStatus
-        }
-    }).promise();
-};
-
-//TEST UPDATEPRODUCTINSTOCKBYPRODUCTNUMBER: WORKS!
-// updateProductInStockByProductNumber('2', false).then(data => {
-//     console.log(data)
-//     console.log("Product updated successfully");
-// }).catch(err => {
-//     console.error(err);
-// });
-
-
 function updateProductInventoryCountByProductNumber(ProductNumber, newInventoryCount) {
     return docClient.update({
         TableName: "products",
@@ -224,7 +197,6 @@ module.exports = {
     retrieveProductByProductNumber,
     updateProductDescriptionByProductNumber,
     updateProductImageByProductNumber,
-    updateProductInStockByProductNumber,
     updateProductInventoryCountByProductNumber,
     updateProductNameByProductNumber,
     updateProductPriceByProductNumber
