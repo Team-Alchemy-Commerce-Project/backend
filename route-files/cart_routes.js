@@ -24,6 +24,8 @@ router.post('/cart', async (req, res) => {
                                 existingItemsPlusDupe.splice(x, 1);
                                 existingItemsPlusDupe.push( { 'product_number': req.body.product_number, 'quantity': newQuantity, 'price': data.Item.price })
                                 await cartDao.updateCart(payload.username, existingItemsPlusDupe);
+                                let newInventory_Count = (data.Item.inventory_count - 1);
+                                await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                 res.statusCode = 201; 
                                 res.send({
                                     "message": `Successfully updated the quantity of ${req.body.product_number} in your cart.`
@@ -39,6 +41,8 @@ router.post('/cart', async (req, res) => {
                                 const existingItemsPlusNew = cartData.Item.items;
                                 existingItemsPlusNew.push( { 'product_number': req.body.product_number, 'quantity': 1, 'price': data.Item.price } );
                                 await cartDao.updateCart(payload.username, existingItemsPlusNew);
+                                let newInventory_Count = (data.Item.inventory_count - 1);
+                                await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                 res.statusCode = 201; 
                                 res.send({
                                     "message": "Successfully added this item to your cart."
@@ -55,6 +59,8 @@ router.post('/cart', async (req, res) => {
                             const newItems = [];
                             newItems.push( { 'product_number': req.body.product_number, 'quantity': 1, 'price': data.Item.price} );
                             await cartDao.updateCart(payload.username, newItems);
+                            let newInventory_Count = (data.Item.inventory_count - 1);
+                            await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                             res.statusCode = 201; 
                             res.send({
                                 "message": "Successfully created your cart and added this item."
@@ -156,6 +162,8 @@ router.patch('/cart', async (req, res) => {
                                 if (newQuantity > 0) {
                                     existingItemsMinusDupe.push( { 'product_number': req.body.product_number, 'quantity': newQuantity, 'price': data.Item.price })
                                     await cartDao.updateCart(payload.username, existingItemsMinusDupe);
+                                    let newInventory_Count = (data.Item.inventory_count + 1);
+                                    await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                     res.statusCode = 201; 
                                     res.send({
                                         "message": `Successfully removed a copy of ${req.body.product_number} from your cart.`
@@ -163,12 +171,16 @@ router.patch('/cart', async (req, res) => {
                                 } else {
                                     if (existingItemsMinusDupe.length === 0) {
                                         await cartDao.updateCart(payload.username, existingItemsMinusDupe);
+                                        let newInventory_Count = (data.Item.inventory_count + 1);
+                                        await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                         res.statusCode = 201; 
                                         res.send({
                                             "message": `Your cart is now empty.`
                                         });
                                     } else {
                                         await cartDao.updateCart(payload.username, existingItemsMinusDupe);
+                                        let newInventory_Count = (data.Item.inventory_count + 1);
+                                        await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                         res.statusCode = 201; 
                                         res.send({
                                             "message": `Successfully removed ${req.body.product_number} from your cart.`
