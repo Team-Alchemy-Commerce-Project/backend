@@ -42,13 +42,12 @@ router.put('/products', async (req, res) => {
     }
 });
 
-
 //VIEW ALL PRODUCTS
 router.get('/products', async (req, res) => {
     try {
             let viewProducts = await productDao.viewAllProducts();
             if (viewProducts.Items.length > 0) {
-                    res.send(viewProducts);
+                res.send(viewProducts);
             } else {
                 res.send('The store is empty now. New items coming soon!')
             }
@@ -67,7 +66,6 @@ router.get('/products', async (req, res) => {
         }
     }
 });
-
 
 //ADMIN UPDATE PRODUCT DESCRIPTION BY PRODUCT NUMBER
 router.patch('/products/:id/description', async (req, res) => {
@@ -325,8 +323,5 @@ router.patch('/products/:id/price', async (req, res) => {
         };
     }
 });
-
-
-
 
 module.exports = router;
