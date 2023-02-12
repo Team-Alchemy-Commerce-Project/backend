@@ -22,7 +22,7 @@ router.post('/cart', async (req, res) => {
                                 let newQuantity = (cartData.Item.items[x].quantity) + 1;
                                 const existingItemsPlusDupe = cartData.Item.items;
                                 existingItemsPlusDupe.splice(x, 1);
-                                existingItemsPlusDupe.push( { 'product_number': req.body.product_number, 'quantity': newQuantity, 'price': data.Item.price })
+                                existingItemsPlusDupe.push( { 'product_number': req.body.product_number, 'quantity': newQuantity, 'price': data.Item.price, 'product_name': data.Item.product_name })
                                 await cartDao.updateCart(payload.username, existingItemsPlusDupe);
                                 let newInventory_Count = (data.Item.inventory_count - 1);
                                 await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
@@ -39,7 +39,7 @@ router.post('/cart', async (req, res) => {
                         } else {
                             try {
                                 const existingItemsPlusNew = cartData.Item.items;
-                                existingItemsPlusNew.push( { 'product_number': req.body.product_number, 'quantity': 1, 'price': data.Item.price } );
+                                existingItemsPlusNew.push( { 'product_number': req.body.product_number, 'quantity': 1, 'price': data.Item.price, 'product_name': data.Item.product_name } );
                                 await cartDao.updateCart(payload.username, existingItemsPlusNew);
                                 let newInventory_Count = (data.Item.inventory_count - 1);
                                 await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
@@ -57,7 +57,7 @@ router.post('/cart', async (req, res) => {
                     } else {
                         try {
                             const newItems = [];
-                            newItems.push( { 'product_number': req.body.product_number, 'quantity': 1, 'price': data.Item.price} );
+                            newItems.push( { 'product_number': req.body.product_number, 'quantity': 1, 'price': data.Item.price, 'product_name': data.Item.product_name} );
                             await cartDao.updateCart(payload.username, newItems);
                             let newInventory_Count = (data.Item.inventory_count - 1);
                             await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
@@ -160,7 +160,7 @@ router.patch('/cart', async (req, res) => {
                                 const existingItemsMinusDupe = cartData.Item.items;
                                 existingItemsMinusDupe.splice(x, 1);
                                 if (newQuantity > 0) {
-                                    existingItemsMinusDupe.push( { 'product_number': req.body.product_number, 'quantity': newQuantity, 'price': data.Item.price })
+                                    existingItemsMinusDupe.push( { 'product_number': req.body.product_number, 'quantity': newQuantity, 'price': data.Item.price, 'product_name': data.Item.product_name })
                                     await cartDao.updateCart(payload.username, existingItemsMinusDupe);
                                     let newInventory_Count = (data.Item.inventory_count + 1);
                                     await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
