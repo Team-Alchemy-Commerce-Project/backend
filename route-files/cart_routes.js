@@ -28,7 +28,7 @@ router.post('/cart', async (req, res) => {
                                 await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                 res.statusCode = 201; 
                                 res.send({
-                                    "message": `Successfully updated the quantity of ${req.body.product_number} in your cart.`
+                                    "message": `Added another copy of ${data.Item.product_name} to your cart.`
                                 });
                             } catch (err) {
                                 res.statusCode = 500;
@@ -45,7 +45,7 @@ router.post('/cart', async (req, res) => {
                                 await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                 res.statusCode = 201; 
                                 res.send({
-                                    "message": "Successfully added this item to your cart."
+                                    "message": `Added ${data.Item.product_name} to your cart.`
                                 });
                             } catch (err) {
                                 res.statusCode = 500;
@@ -63,7 +63,7 @@ router.post('/cart', async (req, res) => {
                             await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                             res.statusCode = 201; 
                             res.send({
-                                "message": "Successfully created your cart and added this item."
+                                "message": `Created your cart and added a copy of ${data.Item.product_name}.`
                             });
                         } catch (err) {
                             res.statusCode = 500;
@@ -81,7 +81,7 @@ router.post('/cart', async (req, res) => {
             } else {
                 res.statusCode = 401;
                 res.send({
-                    "message": `Product with ID ${req.body.product_number} doesn't exist.`
+                    "message": `Product named ${data.Item.product_name} doesn't exist.`
                 })
             }
         } catch(err) {
@@ -166,7 +166,7 @@ router.patch('/cart', async (req, res) => {
                                     await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                     res.statusCode = 201; 
                                     res.send({
-                                        "message": `Successfully removed a copy of ${req.body.product_number} from your cart.`
+                                        "message": `Removed a copy of ${data.Item.product_name} from your cart.`
                                     });
                                 } else {
                                     if (existingItemsMinusDupe.length === 0) {
@@ -183,7 +183,7 @@ router.patch('/cart', async (req, res) => {
                                         await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                         res.statusCode = 201; 
                                         res.send({
-                                            "message": `Successfully removed ${req.body.product_number} from your cart.`
+                                            "message": `Removed ${data.Item.product_name} from your cart.`
                                         });
                                     }
                                 }
@@ -214,7 +214,7 @@ router.patch('/cart', async (req, res) => {
             } else {
                 res.statusCode = 401;
                 res.send({
-                    "message": `Product with ID ${req.body.product_number} doesn't exist.`
+                    "message": `Product ${data.Item.product_name} doesn't exist.`
                 })
             }
         } catch(err) {
