@@ -101,11 +101,218 @@ function updatePasswordByUsername(username, password){
     return docClient.update(params).promise();
 }
 
+function updateNameByUsername(username, full_name){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'full_name'
+        },
+        ExpressionAttributeValues: {
+            ':value': full_name
+        }
+    }
 
+    return docClient.update(params).promise();
+}
+
+function updateCityByUsername(username, city){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'city'
+        },
+        ExpressionAttributeValues: {
+            ':value': city
+        }
+    }
+
+    return docClient.update(params).promise();
+}
+
+function updateStateByUsername(username, state){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'state'
+        },
+        ExpressionAttributeValues: {
+            ':value': state
+        }
+    }
+
+    return docClient.update(params).promise();
+}
+
+function updateStreetAddressByUsername(username, street_address){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'street_address'
+        },
+        ExpressionAttributeValues: {
+            ':value': street_address
+        }
+    }
+
+    return docClient.update(params).promise();
+}
+
+function updateZipCodeByUsername(username, zipcode){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'zipcode'
+        },
+        ExpressionAttributeValues: {
+            ':value': zipcode
+        }
+    }
+
+    return docClient.update(params).promise();
+}
+
+function updateExpirationByUsername(username, expiration){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'expiration'
+        },
+        ExpressionAttributeValues: {
+            ':value': expiration
+        }
+    }
+
+    return docClient.update(params).promise();
+}
+
+function updateLast4DigitsByUsername(username, last4digits){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'last4digits'
+        },
+        ExpressionAttributeValues: {
+            ':value': last4digits
+        }
+    }
+
+    return docClient.update(params).promise();
+}
+
+function updateSecurityCodeByUsername(username, security_code){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'security_code'
+        },
+        ExpressionAttributeValues: {
+            ':value': security_code
+        }
+    }
+
+    return docClient.update(params).promise();
+}
+
+function updateEmailByUsername(username, email){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'email'
+        },
+        ExpressionAttributeValues: {
+            ':value': email
+        }
+    }
+
+    return docClient.update(params).promise();
+}
+
+function updatePhoneNumberByUsername(username, phone_number){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'phone_number'
+        },
+        ExpressionAttributeValues: {
+            ':value': phone_number
+        }
+    }
+
+    return docClient.update(params).promise();
+}
+
+function updateProfilePictureByUsername(username, profile_picture){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value',
+        ExpressionAttributeNames: {
+            '#n': 'profile_picture'
+        },
+        ExpressionAttributeValues: {
+            ':value': profile_picture
+        }
+    }
+
+    return docClient.update(params).promise();
+}
 
 module.exports = {
     retrieveUserName, 
     registerNewUser, 
     retrieveUserEmail, 
-    updatePasswordByUsername
+    updatePasswordByUsername,
+    updateNameByUsername,
+    updateCityByUsername,
+    updateEmailByUsername,
+    updateStateByUsername,
+    updateStreetAddressByUsername,
+    updateZipCodeByUsername,
+    updateExpirationByUsername,
+    updateLast4DigitsByUsername,
+    updateSecurityCodeByUsername,
+    updatePhoneNumberByUsername,
+    updateProfilePictureByUsername
 }
