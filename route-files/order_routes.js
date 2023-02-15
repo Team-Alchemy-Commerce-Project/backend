@@ -16,14 +16,19 @@ router.post('/orders', async (req, res) => {
         const payload = await jwt.verifyToken(token);
         try {
             const data = await customerDao.retrieveUserName(payload.username);
-            if (data.Item.credit_card_info.expiration == req.body.credit_card_info.expiration && 
-                data.Item.credit_card_info.last4digits == req.body.credit_card_info.last4digits &&
-                data.Item.credit_card_info.security_code == req.body.credit_card_info.security_code &&
-                data.Item.credit_card_info.zipcode2 == req.body.credit_card_info.zipcode2                
+            if (data.Item.full_name == req.body.full_name && 
+                data.Item.address.street_address == req.body.street_address && 
+                data.Item.address.city == req.body.city && 
+                data.Item.address.state == req.body.state && 
+                data.Item.address.zipcode1 == req.body.zipcode1 &&                               
+                data.Item.credit_card_info.expiration == req.body.expiration && 
+                data.Item.credit_card_info.last4digits == req.body.last4digits &&
+                data.Item.credit_card_info.security_code == req.body.security_code &&
+                data.Item.credit_card_info.zipcode2 == req.body.zipcode2                
                 ) {
                 const cartData = await cartDao.retrieveItemsInCart(payload.username);
                 try {
-                    await orderDao.addOrderToOrders(uuid.v4(), cartData.Item.items, timestamp.now(), payload.username);
+                    await orderDao.addOrderToOrders(uuid.v4(), cartData.Item.items.product_number, cartData.Item.items.product_name, cartData.Item.items.quantity, cartData.Item.items.price, Number(timestamp.now()), payload.username);
                     await cartDao.deleteCartByUsername(payload.username);
                     res.statusCode = 201; 
                     res.send({

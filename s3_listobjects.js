@@ -15,7 +15,7 @@ function getCoverArt() {
 }*/
 
 function getCoverArt() {
-    console.log(s3.getSignedUrl('getObject', {Bucket: 'alchemy-books', Key: 'cover7.jpg', Expires: 604800 }));
+    console.log(s3.getSignedUrl('getObject', {Bucket: 'alchemy-books', Key: 'cover7.jpg', Expires: 604800} ));
 }
 
 getCoverArt();

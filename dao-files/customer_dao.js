@@ -63,13 +63,13 @@ function registerNewUser(username, street_address, city, state, zipcode1, last4d
                 "street_address": street_address,
                 "city": city,
                 "state": state,
-                "zipcode": zipcode1
+                "zipcode1": zipcode1
             },
             "credit_card_info": {
                 "last4digits": last4digits,
                 "expiration": expiration,
                 "security_code": security_code,
-                "zipcode": zipcode2
+                "zipcode2": zipcode2
             },
             "email": email,
             "full_name": full_name,
