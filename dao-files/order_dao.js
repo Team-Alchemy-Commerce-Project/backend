@@ -19,6 +19,28 @@ function addOrderToOrders(order_id, items, timestamp, username) {
     }).promise();
 }
 
+function retrieveOrdersByUsername(username) {
+    const params = {
+        TableName: 'orders',
+        IndexName: 'username-index',
+        KeyConditionExpression: '#s = :value',
+        ExpressionAttributeNames: {
+            '#s': 'username'
+            
+        },
+        ExpressionAttributeValues: {
+            ':value': username
+            
+
+        }
+    }
+    return docClient.query(params).promise();
+}
+
+
+
+
 module.exports = {
-    addOrderToOrders
+    addOrderToOrders,
+    retrieveOrdersByUsername
 }

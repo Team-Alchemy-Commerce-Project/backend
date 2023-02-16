@@ -67,4 +67,46 @@ router.post('/orders', async (req, res) => {
     }
 });
 
+//VIEW PREVIOUS ORDERS
+router.get('/orders', async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1]; 
+        const payload = await jwt.verifyToken(token);
+       
+        console.log(payload.username)
+        
+        
+        let data = await ordersDao.retrieveOrdersByUsername(payload.username)
+        console.log(data.Items)
+
+            if (data === undefined) {
+                res.statusCode = 400;
+                res.send({
+                    "message": "No orders for this user"
+                })
+
+            } else {
+                
+                res.statusCode = 201;
+                res.send(data.Items);
+
+            }
+        
+
+    } catch(err) {
+        if (err.name === 'JsonWebTokenError') {
+            res.statusCode = 400;
+            res.send({
+                "message": "Invalid JWT"
+            })
+        } else if (err) {
+            res.statusCode = 500;
+            res.send({
+                "message": "no JWT",
+            })
+        }
+    }
+});
+
+
 module.exports = router;
