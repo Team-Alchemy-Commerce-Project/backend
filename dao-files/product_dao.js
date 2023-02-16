@@ -191,6 +191,15 @@ function updateProductPriceByProductNumber(ProductNumber, newPrice) {
 //     console.error(err);
 // });
 
+function retrieveProductByNumber(product_number) {
+    return docClient.get({
+        TableName: 'products',
+        Key: {
+            'product_number': product_number
+        }
+    }).promise();
+}
+
 module.exports = {
     addNewProduct,
     viewAllProducts,
@@ -199,5 +208,6 @@ module.exports = {
     updateProductImageByProductNumber,
     updateProductInventoryCountByProductNumber,
     updateProductNameByProductNumber,
-    updateProductPriceByProductNumber
+    updateProductPriceByProductNumber,
+    retrieveProductByNumber
 };
