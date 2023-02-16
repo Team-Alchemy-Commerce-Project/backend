@@ -7,17 +7,12 @@ AWS.config.update({
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 //ADD CUSTOMER'S PURCHASE TO ORDERS TABLE
-function addOrderToOrders(order_id, product_number, product_name, quantity, price, timestamp, username) {
+function addOrderToOrders(order_id, items, timestamp, username) {
     return docClient.put({
         TableName: 'orders',
         Item: {
             "order_id": order_id,
-            "items": {
-                "product_number": product_number,
-                "product_name": product_name,
-                "quantity": quantity,
-                "price": price
-            },
+            "items": items,
             "timestamp": timestamp,
             "username": username
         }

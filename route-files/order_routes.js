@@ -28,7 +28,7 @@ router.post('/orders', async (req, res) => {
                 ) {
                 const cartData = await cartDao.retrieveItemsInCart(payload.username);
                 try {
-                    await orderDao.addOrderToOrders(uuid.v4(), cartData.Item.items.product_number, cartData.Item.items.product_name, cartData.Item.items.quantity, cartData.Item.items.price, Number(timestamp.now()), payload.username);
+                    await orderDao.addOrderToOrders(uuid.v4(), cartData.Item.items, Number(timestamp.now()), payload.username);
                     await cartDao.deleteCartByUsername(payload.username);
                     res.statusCode = 201; 
                     res.send({
