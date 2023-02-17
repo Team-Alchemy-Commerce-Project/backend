@@ -76,6 +76,50 @@ function registerNewUser(username, street_address, city, state, zipcode1, email,
     return docClient.put(params).promise();
 }
 
+function updateUserProfile(username, password, email, street_address, city, state, zipcode1, expiration, last4digits, security_code, zipcode2, full_name, phone_number, profile_picture){
+    const params = {
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #n = :value1, #a = :value2, #add.#b = :value3, #add.#c = :value4, #add.#d = :value5, #add.#e = :value6, #cred.#f = :value7, #cred.#g = :value8, #cred.#h = :value9, #cred.#i = :value10, #j = :value11, #k = :value12, #l = :value13',
+        ExpressionAttributeNames: {
+            '#n': 'password',
+            '#a': 'email',
+            "#add": 'address',
+            '#b': 'street_address',
+            '#c': 'city',
+            '#d': 'state',
+            '#e': 'zipcode1',
+            '#cred': 'credit_card_info',
+            '#f': 'expiration',
+            '#g': 'last4digits',
+            '#h': 'security_code',
+            '#i': 'zipcode2',
+            '#j': 'full_name',
+            '#k': 'phone_number',
+            '#l': 'profile_picture',
+        },
+        ExpressionAttributeValues: {
+            ':value1': password,
+            ':value2': email,
+            ':value3': street_address,
+            ':value4': city,
+            ':value5': state,
+            ':value6': zipcode1,
+            ':value7': expiration,
+            ':value8': last4digits,
+            ':value9': security_code,
+            ':value10': zipcode2,
+            ':value11': full_name,
+            ':value12': phone_number,
+            ':value13': profile_picture,
+            
+        }
+    }
+
+    return docClient.update(params).promise();
+}
 function updatePasswordByUsername(username, password){
     const params = {
         TableName: "customers",
@@ -326,5 +370,6 @@ module.exports = {
     updateSecurityCodeByUsername,
     updatePhoneNumberByUsername,
     updateProfilePictureByUsername,
-    addCreditCardInfo
+    addCreditCardInfo,
+    updateUserProfile
 }
