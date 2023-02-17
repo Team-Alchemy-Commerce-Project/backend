@@ -52,7 +52,7 @@ function retrieveUserEmail(email){
 
 
 //Function to register a new user account:
-function registerNewUser(username, street_address, city, state, zipcode1, last4digits, expiration, security_code, zipcode2, email, full_name, profile_picture, password, phone_number) {
+function registerNewUser(username, street_address, city, state, zipcode1, email, full_name, profile_picture, password, phone_number) {
 
     const params = {
 
@@ -65,12 +65,6 @@ function registerNewUser(username, street_address, city, state, zipcode1, last4d
                 "state": state,
                 "zipcode1": zipcode1
             },
-            "credit_card_info": {
-                "last4digits": last4digits,
-                "expiration": expiration,
-                "security_code": security_code,
-                "zipcode2": zipcode2
-            },
             "email": email,
             "full_name": full_name,
             "profile_picture": profile_picture,
@@ -79,7 +73,6 @@ function registerNewUser(username, street_address, city, state, zipcode1, last4d
             "role": "user"
         }
     }
-
     return docClient.put(params).promise();
 }
 
@@ -209,7 +202,7 @@ function updateExpirationByUsername(username, expiration){
     return docClient.update(params).promise();
 }
 
-function updateLast4DigitsByUsername(username, last4digits){
+function updateCardNumberByUsername(username, card_number){
     const params = {
         TableName: "customers",
         Key: {
@@ -217,10 +210,10 @@ function updateLast4DigitsByUsername(username, last4digits){
         },
         UpdateExpression: 'set #n = :value',
         ExpressionAttributeNames: {
-            '#n': 'last4digits'
+            '#n': 'card_number'
         },
         ExpressionAttributeValues: {
-            ':value': last4digits
+            ':value': card_number
         }
     }
 
@@ -299,6 +292,24 @@ function updateProfilePictureByUsername(username, profile_picture){
     return docClient.update(params).promise();
 }
 
+//ADD CREDIT CARD INFO TO CUSTOMERS TABLE BY USERNAME:
+function addCreditCardInfo(username, credit_card_info) {
+
+    return docClient.update({
+        TableName: "customers",
+        Key: {
+            username
+        },
+        UpdateExpression: 'set #c = :value',
+        ExpressionAttributeNames: {
+            '#c': 'credit_card_info'
+        },
+        ExpressionAttributeValues: {
+            ':value': credit_card_info
+        }
+    }).promise();
+}
+
 module.exports = {
     retrieveUserName, 
     registerNewUser, 
@@ -311,8 +322,9 @@ module.exports = {
     updateStreetAddressByUsername,
     updateZipCodeByUsername,
     updateExpirationByUsername,
-    updateLast4DigitsByUsername,
+    updateCardNumberByUsername,
     updateSecurityCodeByUsername,
     updatePhoneNumberByUsername,
-    updateProfilePictureByUsername
+    updateProfilePictureByUsername,
+    addCreditCardInfo
 }
