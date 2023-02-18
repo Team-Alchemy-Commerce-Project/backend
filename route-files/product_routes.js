@@ -284,7 +284,6 @@ router.patch('/products/:id/price', async (req, res) => {
 router.get('/products/:product_number', async (req, res) => {
     try {
         let productDetails = await productDao.retrieveProductByNumber(req.params.product_number);
-        console.log(productDetails.Item);
         res.statusCode = 200;
         res.send(productDetails.Item);          
     } catch(err) {
