@@ -65,16 +65,12 @@ router.post('/orders', async (req, res) => {
 });
 
 //VIEW PREVIOUS ORDERS
-router.get('/orders', async (req, res) => {
+router.get('/orders/:username', async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1]; 
         const payload = await jwt.verifyToken(token);
-       
-        console.log(payload.username)
         
-        
-        let data = await ordersDao.retrieveOrdersByUsername(payload.username)
-        console.log(data.Items)
+        let data = await orderDao.retrieveOrdersByUsername(payload.username)
 
             if (data === undefined) {
                 res.statusCode = 400;
@@ -89,7 +85,6 @@ router.get('/orders', async (req, res) => {
 
             }
         
-
     } catch(err) {
         if (err.name === 'JsonWebTokenError') {
             res.statusCode = 400;
