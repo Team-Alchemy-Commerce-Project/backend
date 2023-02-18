@@ -21,6 +21,8 @@ const profileRouter = require('./route-files/profile_routes');
 
 const orderRouter = require('./route-files/order_routes');
 
+const loggingMiddleware = require('./middleware/logger');
+
 const PORT = 8080;
 
 const server = express();
@@ -31,6 +33,8 @@ server.use(cors({
 const uuid = require('uuid');
 const timestamp = require('unix-timestamp');
 timestamp.round = true;
+
+server.use(loggingMiddleware);
 
 server.use(bodyParser.json());
 server.use(registerRouter);
@@ -44,6 +48,8 @@ server.use(profileRouter);
 
 
 server.use(orderRouter);
+
+
 
 
 server.listen(PORT, () => {
