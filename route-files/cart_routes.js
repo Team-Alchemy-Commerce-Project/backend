@@ -11,7 +11,7 @@ router.post('/cart', async (req, res) => {
         const token = req.headers.authorization.split(' ')[1]; 
         const payload = await jwt.verifyToken(token);
         try {
-            const data = await productDao.retrieveProductByProductNumber(req.body.product_number);
+            const data = await productDao.retrieveProductByNumber(req.body.product_number);
             if (data.Item) {
                 try {
                     const cartData = await cartDao.retrieveItemsInCart(payload.username);
@@ -148,7 +148,7 @@ router.patch('/cart', async (req, res) => {
         const token = req.headers.authorization.split(' ')[1]; 
         const payload = await jwt.verifyToken(token);
         try {
-            const data = await productDao.retrieveProductByProductNumber(req.body.product_number);
+            const data = await productDao.retrieveProductByNumber(req.body.product_number);
             if (data.Item) {
                 try {
                     const cartData = await cartDao.retrieveItemsInCart(payload.username);

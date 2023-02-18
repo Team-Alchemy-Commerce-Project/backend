@@ -20,14 +20,11 @@ router.post('/orders', async (req, res) => {
                 data.Item.address.street_address == req.body.street_address && 
                 data.Item.address.city == req.body.city && 
                 data.Item.address.state == req.body.state && 
-                data.Item.address.zipcode1 == req.body.zipcode1 &&                               
-                data.Item.credit_card_info.expiration == req.body.expiration && 
-                data.Item.credit_card_info.last4digits == req.body.last4digits &&
-                data.Item.credit_card_info.security_code == req.body.security_code &&
-                data.Item.credit_card_info.zipcode2 == req.body.zipcode2                
+                data.Item.address.zipcode1 == req.body.zipcode1                                         
                 ) {
                 const cartData = await cartDao.retrieveItemsInCart(payload.username);
                 try {
+                    await customerDao.addCreditCardInfo(payload.username, {"card_number": req.body.card_number, "expiration": req.body.expiration, "security_code": req.body.security_code, "zipcode2": req.body.zipcode2});
                     await orderDao.addOrderToOrders(uuid.v4(), cartData.Item.items, Number(timestamp.now()), payload.username);
                     await cartDao.deleteCartByUsername(payload.username);
                     res.statusCode = 201; 
@@ -43,7 +40,7 @@ router.post('/orders', async (req, res) => {
             } else {
                 res.statusCode = 401;
                 res.send({
-                    "message": "You don't have valid credit card info on file with us."
+                    "message": "Your name and address don't match our records."
                 })
             }
         } catch(err) {
@@ -68,16 +65,12 @@ router.post('/orders', async (req, res) => {
 });
 
 //VIEW PREVIOUS ORDERS
-router.get('/orders', async (req, res) => {
+router.get('/orders/:username', async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1]; 
         const payload = await jwt.verifyToken(token);
-       
-        console.log(payload.username)
         
-        
-        let data = await ordersDao.retrieveOrdersByUsername(payload.username)
-        console.log(data.Items)
+        let data = await orderDao.retrieveOrdersByUsername(payload.username)
 
             if (data === undefined) {
                 res.statusCode = 400;
@@ -92,7 +85,6 @@ router.get('/orders', async (req, res) => {
 
             }
         
-
     } catch(err) {
         if (err.name === 'JsonWebTokenError') {
             res.statusCode = 400;

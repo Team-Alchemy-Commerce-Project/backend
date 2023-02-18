@@ -17,7 +17,11 @@ try {
     if (!userName){
 
         res.statusCode = 400;
+<<<<<<< HEAD
         return res.send({'message': 'Invalid username'})
+=======
+        res.send({'message': 'Invalid username.'})
+>>>>>>> 6c85a38a070b1a707bc1de4c66bda80f5c056647
     }
 
     const isValid = await bcrypt.compare(password, userName.password)
@@ -25,13 +29,13 @@ try {
     if (!isValid) {
 
         res.statusCode = 401;
-        res.send({'message': 'Invalid password'})
+        res.send({'message': 'Invalid password.'})
   
     } else {
 
         res.statusCode = 200;
        
-        res.send({'message': 'You are successfully login',
+        res.send({'message': 'Successful login.',
         "token": jwt.newToken(userName.username, userName.role)  
     });
         

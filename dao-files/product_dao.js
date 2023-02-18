@@ -48,18 +48,17 @@ function viewAllProducts() {
 // });
 
 //RETRIEVE PRODUCT BY PRODUCT NUMBER
-function retrieveProductByProductNumber(ProductNumber) {
-    const params = {
-        TableName: "products",
+function retrieveProductByNumber(product_number) {
+    return docClient.get({
+        TableName: 'products',
         Key: {
-            "product_number": ProductNumber
+            'product_number': product_number
         }
-    }
-    return docClient.get(params).promise();
+    }).promise();
 }
 
-//TEST RETRIEVEPRODUCTBYPRODUCTNUMBER FUNCTION: WORKS!
-// retrieveProductByProductNumber("2").then(data => {
+//TEST RETRIEVEPRODUCTBYNUMBER FUNCTION: WORKS!
+// retrieveProductByNumber("2").then(data => {
 //     console.log(data);
 //     console.log("Product gathered successfully");
 // }).catch(err => {
@@ -68,7 +67,7 @@ function retrieveProductByProductNumber(ProductNumber) {
 
 
 //UPDATE PRODUCT DESCRIPTION BY PRODUCT NUMBER
-function updateProductDescriptionByProductNumber(ProductNumber, newDescription) {
+function updateProductsByNumber(ProductNumber, newDescription) {
     return docClient.update({
         TableName: "products",
         Key: {
@@ -86,32 +85,6 @@ function updateProductDescriptionByProductNumber(ProductNumber, newDescription) 
 
 //TEST UPDATEPRODUCTDESCRIPTIONBYPRODUCTNUMBER: WORKS!
 // updateProductDescriptionByProductNumber('2', 'this is an updated description for this product').then(data => {
-//     console.log(data)
-//     console.log("Product updated successfully");
-// }).catch(err => {
-//     console.error(err);
-// });
-
-
-//UPDATE PRODUCT IMAGE BY PRODUCT NUMBER
-function updateProductImageByProductNumber(ProductNumber, newImage) {
-    return docClient.update({
-        TableName: "products",
-        Key: {
-            "product_number": ProductNumber
-        },
-        UpdateExpression: 'set #b = :value',
-        ExpressionAttributeNames: {
-            '#b': 'image'
-        },
-        ExpressionAttributeValues: {
-            ':value': newImage
-        }
-    }).promise();
-};
-
-//TEST UPDATEPRODUCTIMAGEBYPRODUCTNUMBER: WORKS!
-// updateProductImageByProductNumber('2', 'updatedemail@email.com').then(data => {
 //     console.log(data)
 //     console.log("Product updated successfully");
 // }).catch(err => {
@@ -142,72 +115,10 @@ function updateProductInventoryCountByProductNumber(ProductNumber, newInventoryC
 //     console.error(err);
 // });
 
-
-function updateProductNameByProductNumber(ProductNumber, newName) {
-    return docClient.update({
-        TableName: "products",
-        Key: {
-            "product_number": ProductNumber
-        },
-        UpdateExpression: 'set #e = :value',
-        ExpressionAttributeNames: {
-            '#e': 'name'
-        },
-        ExpressionAttributeValues: {
-            ':value': newName
-        }
-    }).promise();
-};
-
-//TEST UPDATEPRODUCTNAMEBYPRODUCTNUMBER: WORKS!
-// updateProductNameByProductNumber('2', 'Mousetrap').then(data => {
-//     console.log(data)
-//     console.log("Product updated successfully");
-// }).catch(err => {
-//     console.error(err);
-// });
-
-function updateProductPriceByProductNumber(ProductNumber, newPrice) {
-    return docClient.update({
-        TableName: "products",
-        Key: {
-            "product_number": ProductNumber
-        },
-        UpdateExpression: 'set #f = :value',
-        ExpressionAttributeNames: {
-            '#f': 'price'
-        },
-        ExpressionAttributeValues: {
-            ':value': newPrice
-        }
-    }).promise();
-};
-
-//TEST UPDATEPRODUCTPRICEBYPRODUCTNUMBER: WORKS!
-// updateProductPriceByProductNumber('2', 5.99).then(data => {
-//     console.log(data)
-//     console.log("Product updated successfully");
-// }).catch(err => {
-//     console.error(err);
-// });
-
-function retrieveProductByNumber(product_number) {
-    return docClient.get({
-        TableName: 'products',
-        Key: {
-            'product_number': product_number
-        }
-    }).promise();
-}
-
 module.exports = {
     addNewProduct,
     viewAllProducts,
-    retrieveProductByProductNumber,
-    updateProductDescriptionByProductNumber,
-    updateProductImageByProductNumber,
-    updateProductInventoryCountByProductNumber,
-    updateProductNameByProductNumber,
-    updateProductPriceByProductNumber,
-    retrieveProductByNumber
+    retrieveProductByNumber,
+    updateProductsByNumber,
+    updateProductInventoryCountByProductNumber
 };

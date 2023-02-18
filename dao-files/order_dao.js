@@ -25,20 +25,14 @@ function retrieveOrdersByUsername(username) {
         IndexName: 'username-index',
         KeyConditionExpression: '#s = :value',
         ExpressionAttributeNames: {
-            '#s': 'username'
-            
+            '#s': 'username'            
         },
         ExpressionAttributeValues: {
             ':value': username
-            
-
         }
     }
     return docClient.query(params).promise();
 }
-
-
-
 
 module.exports = {
     addOrderToOrders,
