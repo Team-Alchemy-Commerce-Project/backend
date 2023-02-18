@@ -40,7 +40,7 @@ router.post('/orders', async (req, res) => {
             } else {
                 res.statusCode = 401;
                 res.send({
-                    "message": "You don't have valid credit card info on file with us."
+                    "message": "Your name and address don't match our records."
                 })
             }
         } catch(err) {

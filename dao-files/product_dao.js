@@ -91,9 +91,34 @@ function updateProductsByNumber(ProductNumber, newDescription) {
 //     console.error(err);
 // });
 
+function updateProductInventoryCountByProductNumber(ProductNumber, newInventoryCount) {
+    return docClient.update({
+        TableName: "products",
+        Key: {
+            "product_number": ProductNumber
+        },
+        UpdateExpression: 'set #d = :value',
+        ExpressionAttributeNames: {
+            '#d': 'inventory_count'
+        },
+        ExpressionAttributeValues: {
+            ':value': newInventoryCount
+        }
+    }).promise();
+};
+
+//TEST UPDATEPRODUCTINVENTORYCOUNTBYPRODUCTNUMBER: WORKS!
+// updateProductInventoryCountByProductNumber('2', 1).then(data => {
+//     console.log(data)
+//     console.log("Product updated successfully");
+// }).catch(err => {
+//     console.error(err);
+// });
+
 module.exports = {
     addNewProduct,
     viewAllProducts,
     retrieveProductByNumber,
     updateProductsByNumber,
+    updateProductInventoryCountByProductNumber
 };
