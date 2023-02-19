@@ -15,7 +15,7 @@ function sesTest(emailTo, token){
         Message: {
             Body: {
                 Text: {
-                    Data: "To reset password, click this link: http://127.0.0.1:3001/password/" + "\n" + "Reset token:" + token
+                    Data: "To reset password, click this link: http://localhost:3000/new/password" + "\n" + "Reset token:" + token
                 }
             },
             Subject: {
