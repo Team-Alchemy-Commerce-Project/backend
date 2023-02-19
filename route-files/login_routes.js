@@ -17,11 +17,7 @@ try {
     if (!userName){
 
         res.statusCode = 400;
-<<<<<<< HEAD
         return res.send({'message': 'Invalid username'})
-=======
-        res.send({'message': 'Invalid username.'})
->>>>>>> 6c85a38a070b1a707bc1de4c66bda80f5c056647
     }
 
     const isValid = await bcrypt.compare(password, userName.password)
