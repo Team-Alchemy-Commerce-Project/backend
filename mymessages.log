@@ -151,3 +151,13 @@
 {"level":"info","message":"POST request received at endpoint /register","timestamp":"2023-02-19T06:04:22.332Z"}
 {"level":"info","message":"POST request received at endpoint /register","timestamp":"2023-02-19T06:05:55.565Z"}
 {"level":"info","message":"POST request received at endpoint /register","timestamp":"2023-02-19T06:06:05.808Z"}
+{"level":"info","message":"GET request received at endpoint /products","timestamp":"2023-02-19T15:45:59.155Z"}
+{"level":"info","message":"GET request received at endpoint /products","timestamp":"2023-02-19T15:45:59.532Z"}
+{"level":"info","message":"POST request received at endpoint /cart","timestamp":"2023-02-19T15:46:04.852Z"}
+{"level":"info","message":"GET request received at endpoint /products","timestamp":"2023-02-19T15:46:08.366Z"}
+{"level":"info","message":"POST request received at endpoint /cart","timestamp":"2023-02-19T15:46:13.487Z"}
+{"level":"info","message":"GET request received at endpoint /products","timestamp":"2023-02-19T15:46:15.682Z"}
+{"level":"info","message":"GET request received at endpoint /cart","timestamp":"2023-02-19T15:46:18.713Z"}
+{"level":"info","message":"GET request received at endpoint /cart","timestamp":"2023-02-19T15:46:18.813Z"}
+{"level":"info","message":"GET request received at endpoint /products","timestamp":"2023-02-19T15:46:20.755Z"}
+{"level":"info","message":"GET request received at endpoint /products","timestamp":"2023-02-19T15:46:20.909Z"}

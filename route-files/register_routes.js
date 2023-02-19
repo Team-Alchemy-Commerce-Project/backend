@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerValidation } = require('../service/user-service');
+const { registerValidation } = require('../service/register-service');
 
 router.post('/register', async (req, res) => {
 
@@ -15,8 +15,8 @@ router.post('/register', async (req, res) => {
           req.body.zipcode1, email, req.body.full_name, req.body.profile_picture, 
           password, confirmPassword, req.body.phone_number);
 
-    res.statusCode = 200;
-    return res.send({'message': 'Successfully registered.'});
+        res.statusCode = 200;
+        return res.send({'message': 'Successfully registered.'});
 
     } catch (err){
 
@@ -25,7 +25,6 @@ router.post('/register', async (req, res) => {
         } else {
           res.statusCode = 500;
         }
-
         return res.send({
             "message": err.message
         });

@@ -1,5 +1,5 @@
-const { registerValidation } = require('./user-service');
-const { retrieveUserName, retrieveUserEmail, registerNewUser } = require('../dao-files/customer_dao.js');
+const { registerValidation } = require('./register-service');
+const { retrieveUserName, retrieveUserEmail } = require('../dao-files/customer_dao.js');
 const LengthValidationError = require('../errors/length-validation-error');
 const UsernameAlreadyTakenError = require('../errors/username-already-taken-error');
 const EmailAlreadyTakenError = require('../errors/email-already-taken-error');
@@ -12,10 +12,6 @@ jest.mock('../dao-files/customer_dao.js', function() {
     }
 });
 
-// Keep in mind register is an async function
-//  Whatever you throw or return from an async function is wrapped inside of a promise
-// If an async function fails, it is considered a "rejected" promise
-// If an async function succeeds, it is considered a "resolved" promise
 describe('Registration tests', () => {
     test('Username provided is 3 characters', async () => {
         await expect(registerValidation('abc', '1 Park Dr', 'Cleveland', 'Ohio',
@@ -36,7 +32,7 @@ describe('Registration tests', () => {
                 profile_picture: 'URL',
                 role: 'user',
                 phone_number: 1111111111,
-                username: 'another',
+                username: 'username1',
                 address: {
                   zipcode1: 11111,
                   street_address: '1 Road St',
@@ -99,7 +95,7 @@ describe('Registration tests', () => {
         await expect(registerValidation('username10', '1 Park Dr', 'Cleveland', 'Ohio',
         '11111', 'newuser@email.com', 'New User', 'URL', 
             'password', 'password1', '1112223333')).rejects.toThrow(PasswordMatchingError);
-    });
+    })
 
     test('Everything ok', async () => {
         retrieveUserName.mockReturnValueOnce(Promise.resolve({}));
