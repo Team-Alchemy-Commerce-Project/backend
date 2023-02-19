@@ -120,6 +120,8 @@ function updateUserProfile(username, password, email, street_address, city, stat
 
     return docClient.update(params).promise();
 }
+
+
 function updatePasswordByUsername(username, password){
     const params = {
         TableName: "customers",
@@ -354,6 +356,7 @@ function addCreditCardInfo(username, credit_card_info) {
     }).promise();
 }
 
+
 module.exports = {
     retrieveUserName, 
     registerNewUser, 
@@ -371,5 +374,5 @@ module.exports = {
     updatePhoneNumberByUsername,
     updateProfilePictureByUsername,
     addCreditCardInfo,
-    updateUserProfile
+    updateUserProfile,
 }
