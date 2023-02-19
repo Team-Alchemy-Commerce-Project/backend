@@ -27,12 +27,12 @@ router.post('/cart', async (req, res) => {
                                 let newInventory_Count = (data.Item.inventory_count - 1);
                                 await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                 res.statusCode = 201; 
-                                res.send({
+                                return res.send({
                                     "message": `Added another copy of ${data.Item.product_name} to your cart.`
                                 });
                             } catch (err) {
                                 res.statusCode = 500;
-                                res.send({
+                                return res.send({
                                     "message": err
                                 });  
                             }                                           
@@ -44,12 +44,12 @@ router.post('/cart', async (req, res) => {
                                 let newInventory_Count = (data.Item.inventory_count - 1);
                                 await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                 res.statusCode = 201; 
-                                res.send({
+                                return res.send({
                                     "message": `Added ${data.Item.product_name} to your cart.`
                                 });
                             } catch (err) {
                                 res.statusCode = 500;
-                                res.send({
+                                return res.send({
                                     "message": err
                                 });  
                             }  
@@ -62,43 +62,43 @@ router.post('/cart', async (req, res) => {
                             let newInventory_Count = (data.Item.inventory_count - 1);
                             await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                             res.statusCode = 201; 
-                            res.send({
+                            return res.send({
                                 "message": `Created your cart and added a copy of ${data.Item.product_name}.`
                             });
                         } catch (err) {
                             res.statusCode = 500;
-                            res.send({
+                            return res.send({
                                 "message": err
                             });  
                         }                              
                     }              
                 } catch (err) {
                     res.statusCode = 500;
-                    res.send({
+                    return res.send({
                         "message": err
                     });  
                 }
             } else {
                 res.statusCode = 401;
-                res.send({
+                return res.send({
                     "message": `Product named ${data.Item.product_name} doesn't exist.`
                 })
             }
         } catch(err) {
             res.statusCode = 500;
-            res.send({
+            return res.send({
                 "message": err
             });
         }
     } catch(err) {
         if (err.name === 'JsonWebTokenError') {
             res.statusCode = 400;
-            res.send({
+            return res.send({
                 "message": "Invalid JWT"
             })
         } else if (err) {
             res.statusCode = 500;
-            res.send({
+            return res.send({
                 "message": "no JWT"
             });
         }
@@ -117,25 +117,25 @@ router.get('/cart', async (req, res) => {
                 res.send(cartData.Item.items);
             } else {
                 res.statusCode = 401;
-                res.send({
+                return res.send({
                     "message": "Your cart is empty."
                 });  
             }                  
         } catch(err) {
             res.statusCode = 500;
-            res.send({
+            return res.send({
                 "message": err
             });
         }
     } catch(err) {
         if (err.name === 'JsonWebTokenError') {
             res.statusCode = 400;
-            res.send({
+            return res.send({
                 "message": "Invalid JWT"
             })
         } else if (err) {
             res.statusCode = 500;
-            res.send({
+            return res.send({
                 "message": "no JWT"
             });
         }
@@ -165,7 +165,7 @@ router.patch('/cart', async (req, res) => {
                                     let newInventory_Count = (data.Item.inventory_count + 1);
                                     await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                     res.statusCode = 201; 
-                                    res.send({
+                                    return res.send({
                                         "message": `Removed a copy of ${data.Item.product_name} from your cart.`
                                     });
                                 } else {
@@ -174,7 +174,7 @@ router.patch('/cart', async (req, res) => {
                                         let newInventory_Count = (data.Item.inventory_count + 1);
                                         await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                         res.statusCode = 201; 
-                                        res.send({
+                                        return res.send({
                                             "message": `Your cart is now empty.`
                                         });
                                     } else {
@@ -182,56 +182,56 @@ router.patch('/cart', async (req, res) => {
                                         let newInventory_Count = (data.Item.inventory_count + 1);
                                         await productDao.updateProductInventoryCountByProductNumber(req.body.product_number, newInventory_Count);
                                         res.statusCode = 201; 
-                                        res.send({
+                                        return res.send({
                                             "message": `Removed ${data.Item.product_name} from your cart.`
                                         });
                                     }
                                 }
                             } catch (err) {
                                 res.statusCode = 500;
-                                res.send({
+                                return res.send({
                                     "message": err
                                 });  
                             }                                           
                         } else {
                             res.statusCode = 401; 
-                            res.send({
+                            return res.send({
                                 "message": "This item is not in your cart."
                             });      
                         }                           
                     } else {
                         res.statusCode = 401; 
-                        res.send({
+                        return res.send({
                             "message": "Your cart is already empty."
                         });                        
                     }              
                 } catch (err) {
                     res.statusCode = 500;
-                    res.send({
+                    return res.send({
                         "message": err
                     });  
                 }
             } else {
                 res.statusCode = 401;
-                res.send({
+                return res.send({
                     "message": `Product ${data.Item.product_name} doesn't exist.`
                 })
             }
         } catch(err) {
             res.statusCode = 500;
-            res.send({
+            return res.send({
                 "message": err
             });
         }
     } catch(err) {
         if (err.name === 'JsonWebTokenError') {
             res.statusCode = 400;
-            res.send({
+            return res.send({
                 "message": "Invalid JWT"
             })
         } else if (err) {
             res.statusCode = 500;
-            res.send({
+            return res.send({
                 "message": "no JWT"
             });
         }
