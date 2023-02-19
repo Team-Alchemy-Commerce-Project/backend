@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
     if (newUser) {
 
           res.statusCode = 400;
-          res.send({'message': 'This name is taken, please try again.'});
+          res.send({'message': 'This username is taken, please try again.'});
         
     }    
     
