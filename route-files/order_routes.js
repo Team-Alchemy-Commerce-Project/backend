@@ -28,36 +28,36 @@ router.post('/orders', async (req, res) => {
                     await orderDao.addOrderToOrders(uuid.v4(), cartData.Item.items, Number(timestamp.now()), payload.username);
                     await cartDao.deleteCartByUsername(payload.username);
                     res.statusCode = 201; 
-                    res.send({
+                    return res.send({
                         "message": "Successfully added purchase to order history."
                     });
                 } catch (err) {
                     res.statusCode = 500;
-                    res.send({
+                    return res.send({
                         "message": err
                     });  
                 }
             } else {
                 res.statusCode = 401;
-                res.send({
+                return res.send({
                     "message": "Your name and address don't match our records."
                 })
             }
         } catch(err) {
             res.statusCode = 500;
-            res.send({
+            return res.send({
                 "message": err
             });
         }
     } catch(err) {
         if (err.name === 'JsonWebTokenError') {
             res.statusCode = 400;
-            res.send({
+            return res.send({
                 "message": "Invalid JWT"
             })
         } else if (err) {
             res.statusCode = 500;
-            res.send({
+            return res.send({
                 "message": "no JWT"
             });
         }
@@ -74,26 +74,26 @@ router.get('/orders/:username', async (req, res) => {
 
             if (data === undefined) {
                 res.statusCode = 400;
-                res.send({
+                return res.send({
                     "message": "No orders for this user"
                 })
 
             } else {
                 
                 res.statusCode = 201;
-                res.send(data.Items);
+                return res.send(data.Items);
 
             }
         
     } catch(err) {
         if (err.name === 'JsonWebTokenError') {
             res.statusCode = 400;
-            res.send({
+            return res.send({
                 "message": "Invalid JWT"
             })
         } else if (err) {
             res.statusCode = 500;
-            res.send({
+            return res.send({
                 "message": "no JWT",
             })
         }

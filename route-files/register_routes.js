@@ -19,14 +19,16 @@ router.post('/register', async (req, res) => {
     if (newUser) {
 
           res.statusCode = 400;
+
           res.send({'message': 'This username is taken, please try again.'});
+
         
     }    
     
      else if (checkEmail){
          
         res.statusCode = 400;
-        res.send({'message': 'Email is already taken, please try again.'}); 
+        return res.send({'message': 'Email is already taken, please try again.'}); 
       
         }
    
@@ -38,14 +40,14 @@ router.post('/register', async (req, res) => {
                             req.body.password, req.body.phone_number);
 
       res.statusCode = 200;
-      res.send({'message': 'Successfully registered.'});
+      return res.send({'message': 'Successfully registered.'});
   
      }
     
   } catch (err){
 
     res.statusCode = 500;
-    res.send({'message': `${err}`})
+    return res.send({'message': `${err}`})
 
   }
 

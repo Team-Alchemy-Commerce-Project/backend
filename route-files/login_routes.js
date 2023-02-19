@@ -25,13 +25,13 @@ try {
     if (!isValid) {
 
         res.statusCode = 401;
-        res.send({'message': 'Invalid password.'})
+        return res.send({'message': 'Invalid password.'})
   
     } else {
 
         res.statusCode = 200;
        
-        res.send({'message': 'Successful login.',
+        return res.send({'message': 'Successful login.',
         "token": jwt.newToken(userName.username, userName.role)  
     });
         
@@ -41,7 +41,7 @@ try {
 } catch (err){
 
     res.statusCode = 500;
-    res.send({'message': `${err}`})
+    return res.send({'message': `${err}`})
 }
 
 });
