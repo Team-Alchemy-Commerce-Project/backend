@@ -15,7 +15,7 @@ router.get('/customer/profile', async (req, res) => {
 })
 
 
-router.patch('/customer/profile', async (req, res)=> {
+router.patch('/update/profile', async (req, res)=> {
     const token = req.headers.authorization.split(' ')[1]; 
     const payload = await JWT.verifyToken(token);
     if (payload){
