@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
 const jwt = require('../utility/jwts');
 const { loginValidation } = require('../service/login-service');
+const { retrieveUserName } = require('../dao-files/customer_dao');
 
 router.post('/login', async (req, res) => {
 
@@ -12,11 +12,11 @@ router.post('/login', async (req, res) => {
         const password = req.body.password;
 
         await loginValidation(username, password);
-
+        let data = await retrieveUserName(username);
         res.statusCode = 200;
         
             return res.send({'message': 'Successful login.',
-            "token": jwt.newToken(data.Item.username, data.Item.role)  
+            "token": jwt.newToken(username, data.Item.role)  
         });
             
     } catch (err){
@@ -26,7 +26,6 @@ router.post('/login', async (req, res) => {
         } else {
         res.statusCode = 500;
         }
-
         return res.send({
             "message": err.message
         });
