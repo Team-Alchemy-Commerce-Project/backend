@@ -13,7 +13,8 @@ router.post('/register', async (req, res) => {
 
         await registerValidation(username, req.body.street_address, req.body.city, req.body.state,
           req.body.zipcode1, email, req.body.full_name, req.body.profile_picture, 
-          password, confirmPassword, req.body.phone_number);
+          password, confirmPassword, req.body.phone_number, req.body.card_number, req.body.expiration, req.body.security_code,
+          req.body.zipcode2);
 
         res.statusCode = 200;
         return res.send({'message': 'Successfully registered.'});
@@ -29,7 +30,6 @@ router.post('/register', async (req, res) => {
             "message": err.message
         });
     }
-
 });
 
 module.exports = router;

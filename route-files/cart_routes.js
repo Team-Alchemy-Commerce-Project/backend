@@ -15,7 +15,7 @@ router.post('/cart', async (req, res) => {
             if (data.Item) {
                 try {
                     const cartData = await cartDao.retrieveItemsInCart(payload.username);
-                    if (typeof cartData.Item !== 'undefined') {
+                    if (cartData.Item.items.length > 0) {
                         if (cartData.Item.items.find(item => item.product_number === req.body.product_number)) {
                             try {
                                 const x = cartData.Item.items.map(e => e.product_number).indexOf(req.body.product_number);
@@ -152,7 +152,7 @@ router.patch('/cart', async (req, res) => {
             if (data.Item) {
                 try {
                     const cartData = await cartDao.retrieveItemsInCart(payload.username);
-                    if (cartData.Item.items) {
+                    if (cartData.Item.items.length > 0) {
                         if (cartData.Item.items.find(item => item.product_number === req.body.product_number)) {
                             try {
                                 const x = cartData.Item.items.map(e => e.product_number).indexOf(req.body.product_number);

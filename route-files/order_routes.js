@@ -20,11 +20,14 @@ router.post('/orders', async (req, res) => {
                 data.Item.address.street_address == req.body.street_address && 
                 data.Item.address.city == req.body.city && 
                 data.Item.address.state == req.body.state && 
-                data.Item.address.zipcode1 == req.body.zipcode1                                         
+                data.Item.address.zipcode1 == req.body.zipcode1 &&                               
+                data.Item.credit_card_info.expiration == req.body.expiration && 
+                data.Item.credit_card_info.card_number == req.body.card_number &&
+                data.Item.credit_card_info.security_code == req.body.security_code &&
+                data.Item.credit_card_info.zipcode2 == req.body.zipcode2                
                 ) {
                 const cartData = await cartDao.retrieveItemsInCart(payload.username);
                 try {
-                    await customerDao.addCreditCardInfo(payload.username, {"card_number": req.body.card_number, "expiration": req.body.expiration, "security_code": req.body.security_code, "zipcode2": req.body.zipcode2});
                     await orderDao.addOrderToOrders(uuid.v4(), cartData.Item.items, Number(timestamp.now()), payload.username);
                     await cartDao.deleteCartByUsername(payload.username);
                     res.statusCode = 201; 

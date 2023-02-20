@@ -12,7 +12,8 @@ const bcrypt = require('bcrypt');
 // 5. password must match confirmPassword
 async function registerValidation(username, street_address, city, state,
     zipcode1, email, full_name, profile_picture, 
-    password, confirmPassword, phone_number) {
+    password, confirmPassword, phone_number, card_number, expiration, security_code,
+    zipcode2) {
 
     // Logic 1 and 2
     if (username.length < 4 || password.length < 4) {
@@ -41,7 +42,8 @@ async function registerValidation(username, street_address, city, state,
 
     await registerNewUser(username, street_address, city, state,
         zipcode1, email, full_name, profile_picture, 
-        hashPassword, phone_number);
+        hashPassword, phone_number, card_number, expiration, security_code,
+        zipcode2);
 }
 
 module.exports = {

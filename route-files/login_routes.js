@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('../utility/jwts');
 const { loginValidation } = require('../service/login-service');
 const { retrieveUserName } = require('../dao-files/customer_dao');
+const uuid = require ('uuid');
 
 router.post('/login', async (req, res) => {
 
@@ -26,6 +27,25 @@ router.post('/login', async (req, res) => {
         } else {
         res.statusCode = 500;
         }
+        return res.send({
+            "message": err.message
+        });
+    }
+});
+
+module.exports = router;
+
+router.get('/login', async (req, res) => {
+
+    try {
+        res.statusCode = 200;
+        
+            return res.send({'message': 'Welcome guest.',
+            "token": jwt.newToken(uuid.v4(), 'guest')  
+        });
+            
+    } catch (err){
+
         return res.send({
             "message": err.message
         });

@@ -15,14 +15,16 @@ jest.mock('../dao-files/customer_dao.js', function() {
 describe('Registration tests', () => {
     test('Username provided is 3 characters', async () => {
         await expect(registerValidation('abc', '1 Park Dr', 'Cleveland', 'Ohio',
-        '11111', 'newuser@email.com', 'New User', 'URL', 
-            'password1', 'password1', '1112223333')).rejects.toThrow(LengthValidationError);
+        11111, 'newuser@email.com', 'New User', 'URL', 
+            'password1', 'password1', 1112223333, 1234567887654321, 0427, 123,
+            11111)).rejects.toThrow(LengthValidationError);
     });
 
     test('Password provided is 3 characters', async () => {
         await expect(registerValidation('username1', '1 Park Dr', 'Cleveland', 'Ohio',
-        '11111', 'newuser@email.com', 'New User', 'URL', 
-            'pas', 'pas', '1112223333')).rejects.toThrow(LengthValidationError);
+        11111, 'newuser@email.com', 'New User', 'URL', 
+            'pas', 'pas', 1112223333, 1234567887654321, 0427, 123,
+            11111)).rejects.toThrow(LengthValidationError);
     });
 
     test('Username is already taken' , async () => {
@@ -51,8 +53,9 @@ describe('Registration tests', () => {
         }));
 
         await expect(registerValidation('username1', '1 Park Dr', 'Cleveland', 'Ohio',
-        '11111', 'newuser@email.com', 'New User', 'URL', 
-            'password1', 'password1', '1112223333')).rejects.toThrow(UsernameAlreadyTakenError);
+        11111, 'newuser@email.com', 'New User', 'URL', 
+            'password1', 'password1', 1112223333, 1234567887654321, 0427, 123,
+            11111)).rejects.toThrow(UsernameAlreadyTakenError);
     });
 
     test('Email is already taken' , async () => {
@@ -84,8 +87,9 @@ describe('Registration tests', () => {
         }));
 
         await expect(registerValidation('username10', '1 Park Dr', 'Cleveland', 'Ohio',
-        '11111', 'newuser@email.com', 'New User', 'URL', 
-            'password1', 'password1', '1112223333')).rejects.toThrow(EmailAlreadyTakenError);
+        11111, 'newuser@email.com', 'New User', 'URL', 
+            'password1', 'password1', 1112223333, 1234567887654321, 0427, 123,
+            11111)).rejects.toThrow(EmailAlreadyTakenError);
     });
 
     test('Password does not match confirmPassword', async () => {
@@ -93,8 +97,9 @@ describe('Registration tests', () => {
         retrieveUserEmail.mockReturnValueOnce(Promise.resolve({ Items: [], Count: 0, ScannedCount: 0 }));
 
         await expect(registerValidation('username10', '1 Park Dr', 'Cleveland', 'Ohio',
-        '11111', 'newuser@email.com', 'New User', 'URL', 
-            'password', 'password1', '1112223333')).rejects.toThrow(PasswordMatchingError);
+        11111, 'newuser@email.com', 'New User', 'URL', 
+            'password', 'password1', 1112223333, 1234567887654321, 0427, 123,
+            11111)).rejects.toThrow(PasswordMatchingError);
     })
 
     test('Everything ok', async () => {
@@ -102,7 +107,8 @@ describe('Registration tests', () => {
         retrieveUserEmail.mockReturnValueOnce(Promise.resolve({ Items: [], Count: 0, ScannedCount: 0 }));
 
         await registerValidation('username10', '1 Park Dr', 'Cleveland', 'Ohio',
-        '11111', 'newuser@email.com', 'New User', 'URL', 
-            'password1', 'password1', '1112223333');
+        11111, 'newuser@email.com', 'New User', 'URL', 
+            'password1', 'password1', 1112223333, 1234567887654321, 0427, 123,
+            11111);
     });
 });

@@ -338,25 +338,6 @@ function updateProfilePictureByUsername(username, profile_picture){
     return docClient.update(params).promise();
 }
 
-//ADD CREDIT CARD INFO TO CUSTOMERS TABLE BY USERNAME:
-function addCreditCardInfo(username, credit_card_info) {
-
-    return docClient.update({
-        TableName: "customers",
-        Key: {
-            username
-        },
-        UpdateExpression: 'set #c = :value',
-        ExpressionAttributeNames: {
-            '#c': 'credit_card_info'
-        },
-        ExpressionAttributeValues: {
-            ':value': credit_card_info
-        }
-    }).promise();
-}
-
-
 module.exports = {
     retrieveUserName, 
     registerNewUser, 
@@ -373,6 +354,5 @@ module.exports = {
     updateSecurityCodeByUsername,
     updatePhoneNumberByUsername,
     updateProfilePictureByUsername,
-    addCreditCardInfo,
     updateUserProfile,
 }
