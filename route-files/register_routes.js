@@ -23,6 +23,7 @@ router.post('/register', async (req, res) => {
 
         if (err.name === 'LengthValidationError' || err.name === 'UsernameAlreadyTakenError' || err.name === 'EmailAlreadyTakenError' || err.name === 'PasswordMatchingError') {
           res.statusCode = 400;
+
         } else {
           res.statusCode = 500;
         }
