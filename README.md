@@ -1,7 +1,5 @@
 
-# Foundations Project
-## Startup
-To start...
+# Project 2
 ## Endpoints
 ## Login Endpoint
 ### Request
