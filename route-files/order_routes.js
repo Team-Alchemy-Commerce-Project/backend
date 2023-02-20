@@ -54,7 +54,7 @@ router.post('/orders', async (req, res) => {
             } else {
                 res.statusCode = 401;
                 return res.send({
-                    "message": "Your name and address don't match our records."
+                    "message": "Your information doesn't match our records."
                 })
             }
         }
