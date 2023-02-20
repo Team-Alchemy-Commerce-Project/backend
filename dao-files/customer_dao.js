@@ -76,7 +76,7 @@ function registerNewUser(username, street_address, city, state, zipcode1, email,
     return docClient.put(params).promise();
 }
 
-function updateUserProfile(username, password, email, street_address, city, state, zipcode1, expiration, last4digits, security_code, zipcode2, full_name, phone_number, profile_picture){
+function updateUserProfile(username, password, email, street_address, city, state, zipcode1, expiration, card_number, security_code, zipcode2, full_name, phone_number, profile_picture){
     const params = {
         TableName: "customers",
         Key: {
@@ -93,7 +93,7 @@ function updateUserProfile(username, password, email, street_address, city, stat
             '#e': 'zipcode1',
             '#cred': 'credit_card_info',
             '#f': 'expiration',
-            '#g': 'last4digits',
+            '#g': 'card_number',
             '#h': 'security_code',
             '#i': 'zipcode2',
             '#j': 'full_name',
@@ -108,7 +108,7 @@ function updateUserProfile(username, password, email, street_address, city, stat
             ':value5': state,
             ':value6': zipcode1,
             ':value7': expiration,
-            ':value8': last4digits,
+            ':value8': card_number,
             ':value9': security_code,
             ':value10': zipcode2,
             ':value11': full_name,

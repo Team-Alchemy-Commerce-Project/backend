@@ -6,6 +6,7 @@ const { retrieveUserName } = require('../dao-files/customer_dao');
 
 router.post('/login', async (req, res) => {
 
+
     try {
 
         const username = req.body.username;
