@@ -14,7 +14,18 @@ router.post('/orders', async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1]; 
         const payload = await jwt.verifyToken(token);
-        try {
+        const cartData = await cartDao.retrieveItemsInCart(payload.username);
+        if (payload.role === 'guest') {
+            await customerDao.documentGuestInfo(payload.username, req.body.street_address, req.body.city, req.body.state,
+                req.body.zipcode1, req.body.full_name, req.body.card_number, req.body.expiration, req.body.security_code, req.body.zipcode2);
+            await orderDao.addOrderToOrders(uuid.v4(), cartData.Item.items, Number(timestamp.now()), payload.username);
+            await cartDao.deleteCartByUsername(payload.username);
+            await cartDao.addCart(payload.username, []);          
+            res.statusCode = 201; 
+            return res.send({
+                "message": "Successfully purchased items in cart."
+            });
+        } else {
             const data = await customerDao.retrieveUserName(payload.username);
             if (data.Item.full_name == req.body.full_name && 
                 data.Item.address.street_address == req.body.street_address && 
@@ -26,10 +37,10 @@ router.post('/orders', async (req, res) => {
                 data.Item.credit_card_info.security_code == req.body.security_code &&
                 data.Item.credit_card_info.zipcode2 == req.body.zipcode2                
                 ) {
-                const cartData = await cartDao.retrieveItemsInCart(payload.username);
                 try {
                     await orderDao.addOrderToOrders(uuid.v4(), cartData.Item.items, Number(timestamp.now()), payload.username);
                     await cartDao.deleteCartByUsername(payload.username);
+                    await cartDao.addCart(payload.username, []);          
                     res.statusCode = 201; 
                     return res.send({
                         "message": "Successfully added purchase to order history."
@@ -46,11 +57,6 @@ router.post('/orders', async (req, res) => {
                     "message": "Your name and address don't match our records."
                 })
             }
-        } catch(err) {
-            res.statusCode = 500;
-            return res.send({
-                "message": err
-            });
         }
     } catch(err) {
         if (err.name === 'JsonWebTokenError') {
@@ -58,10 +64,10 @@ router.post('/orders', async (req, res) => {
             return res.send({
                 "message": "Invalid JWT"
             })
-        } else if (err) {
+        } else {
             res.statusCode = 500;
             return res.send({
-                "message": "no JWT"
+                "message": err
             });
         }
     }

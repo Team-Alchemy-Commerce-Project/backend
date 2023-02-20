@@ -48,24 +48,24 @@ router.post('/products', async (req, res) => {
 //VIEW ALL PRODUCTS
 router.get('/products', async (req, res) => {
     try {
-            let viewProducts = await productDao.viewAllProducts();
-            if (viewProducts.Items.length > 0) {
-                return res.send(viewProducts);
-            } else {
-                return res.send('The store is empty now. New items coming soon!')
-            }
-        }  catch(err) {
-                if (err.name === 'TypeError') {
-                    res.statusCode = 400;
-                    return res.send({
-                        "message": "No Authorization header provided."
-                });
-                } else {
-                    res.statusCode = 500;
-                    //server error
-                    return res.send({
-                        "message": "Something went wrong. Please reload the page and try again. :/"
-                });
+        let viewProducts = await productDao.viewAllProducts();
+        if (viewProducts.Items.length > 0) {
+            return res.send(viewProducts);
+        } else {
+            return res.send('The store is empty now. New items coming soon!')
+        }
+    }  catch(err) {
+        if (err.name === 'TypeError') {
+            res.statusCode = 400;
+            return res.send({
+                "message": "No Authorization header provided."
+            });
+        } else {
+            res.statusCode = 500;
+            //server error
+            return res.send({
+                "message": "Something went wrong. Please reload the page and try again. :/"
+        });
         }
     }
 });

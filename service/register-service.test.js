@@ -16,14 +16,14 @@ describe('Registration tests', () => {
     test('Username provided is 3 characters', async () => {
         await expect(registerValidation('abc', '1 Park Dr', 'Cleveland', 'Ohio',
         11111, 'newuser@email.com', 'New User', 'URL', 
-            'password1', 'password1', 1112223333, 1234567887654321, 0427, 123,
+            'password1', 'password1', 1112223333, 1234567887654321, 427, 123,
             11111)).rejects.toThrow(LengthValidationError);
     });
 
     test('Password provided is 3 characters', async () => {
         await expect(registerValidation('username1', '1 Park Dr', 'Cleveland', 'Ohio',
         11111, 'newuser@email.com', 'New User', 'URL', 
-            'pas', 'pas', 1112223333, 1234567887654321, 0427, 123,
+            'pas', 'pas', 1112223333, 1234567887654321, 427, 123,
             11111)).rejects.toThrow(LengthValidationError);
     });
 
@@ -54,7 +54,7 @@ describe('Registration tests', () => {
 
         await expect(registerValidation('username1', '1 Park Dr', 'Cleveland', 'Ohio',
         11111, 'newuser@email.com', 'New User', 'URL', 
-            'password1', 'password1', 1112223333, 1234567887654321, 0427, 123,
+            'password1', 'password1', 1112223333, 1234567887654321, 427, 123,
             11111)).rejects.toThrow(UsernameAlreadyTakenError);
     });
 
@@ -88,7 +88,7 @@ describe('Registration tests', () => {
 
         await expect(registerValidation('username10', '1 Park Dr', 'Cleveland', 'Ohio',
         11111, 'newuser@email.com', 'New User', 'URL', 
-            'password1', 'password1', 1112223333, 1234567887654321, 0427, 123,
+            'password1', 'password1', 1112223333, 1234567887654321, 427, 123,
             11111)).rejects.toThrow(EmailAlreadyTakenError);
     });
 
@@ -98,7 +98,7 @@ describe('Registration tests', () => {
 
         await expect(registerValidation('username10', '1 Park Dr', 'Cleveland', 'Ohio',
         11111, 'newuser@email.com', 'New User', 'URL', 
-            'password', 'password1', 1112223333, 1234567887654321, 0427, 123,
+            'password', 'password1', 1112223333, 1234567887654321, 427, 123,
             11111)).rejects.toThrow(PasswordMatchingError);
     })
 
@@ -108,7 +108,7 @@ describe('Registration tests', () => {
 
         await registerValidation('username10', '1 Park Dr', 'Cleveland', 'Ohio',
         11111, 'newuser@email.com', 'New User', 'URL', 
-            'password1', 'password1', 1112223333, 1234567887654321, 0427, 123,
+            'password1', 'password1', 1112223333, 1234567887654321, 427, 123,
             11111);
     });
 });

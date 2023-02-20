@@ -43,8 +43,20 @@ function deleteCartByUsername(username) {
     }).promise();
 }
 
+//CREATE EMPTY CART FOR USER
+function addCart(username, items) {
+    return docClient.put({
+        TableName: 'carts',
+        Item: {
+            "items": items,
+            "username": username
+        }
+    }).promise();
+}
+
 module.exports = {
     retrieveItemsInCart,
     updateCart,
     deleteCartByUsername,
+    addCart
 }

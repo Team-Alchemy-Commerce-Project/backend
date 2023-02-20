@@ -52,7 +52,8 @@ function retrieveUserEmail(email){
 
 
 //Function to register a new user account:
-function registerNewUser(username, street_address, city, state, zipcode1, email, full_name, profile_picture, password, phone_number) {
+function registerNewUser(username, street_address, city, state, zipcode1, email, full_name, profile_picture, password, phone_number, 
+    card_number, expiration, security_code, zipcode2) {
 
     const params = {
 
@@ -64,6 +65,12 @@ function registerNewUser(username, street_address, city, state, zipcode1, email,
                 "city": city,
                 "state": state,
                 "zipcode1": zipcode1
+            },
+            "credit_card_info": {
+                "card_number": card_number,
+                "expiration": expiration,
+                "security_code": security_code,
+                "zipcode2": zipcode2
             },
             "email": email,
             "full_name": full_name,
@@ -338,6 +345,34 @@ function updateProfilePictureByUsername(username, profile_picture){
     return docClient.update(params).promise();
 }
 
+//PUT GUEST PURCHASE INFO IN THE SYSTEM
+function documentGuestInfo(username, street_address, city, state, zipcode1, full_name,
+    card_number, expiration, security_code, zipcode2) {
+
+    const params = {
+
+        TableName: "customers",
+        Item: {
+            "full_name": full_name,
+            "username": username,
+            "address": {
+                "street_address": street_address,
+                "city": city,
+                "state": state,
+                "zipcode1": zipcode1
+            },
+            "credit_card_info": {
+                "card_number": card_number,
+                "expiration": expiration,
+                "security_code": security_code,
+                "zipcode2": zipcode2
+            },
+            "role": "guest"
+        }
+    }
+    return docClient.put(params).promise();
+}
+
 module.exports = {
     retrieveUserName, 
     registerNewUser, 
@@ -355,4 +390,5 @@ module.exports = {
     updatePhoneNumberByUsername,
     updateProfilePictureByUsername,
     updateUserProfile,
+    documentGuestInfo
 }
