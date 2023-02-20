@@ -1,50 +1,36 @@
-
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
-const {retrieveUserName} = require('../dao-files/customer_dao')
 const jwt = require('../utility/jwts');
-
+const { loginValidation } = require('../service/login-service');
+const { retrieveUserName } = require('../dao-files/customer_dao');
 
 router.post('/login', async (req, res) => {
 
-try {
 
-    const username = req.body.username;
-    const password = req.body.password;
-    let data = await retrieveUserName(username);
-    const userName = data.Item
-    if (!userName){
+    try {
 
-        res.statusCode = 400;
-        return res.send({'message': 'Invalid username'})
-    }
+        const username = req.body.username;
+        const password = req.body.password;
 
-    const isValid = await bcrypt.compare(password, userName.password)
-
-    if (!isValid) {
-
-        res.statusCode = 401;
-        res.send({'message': 'Invalid password.'})
-  
-    } else {
-
+        await loginValidation(username, password);
+        let data = await retrieveUserName(username);
         res.statusCode = 200;
-       
-        res.send({'message': 'Successful login.',
-        "token": jwt.newToken(userName.username, userName.role)  
-    });
         
-   
-}
+            return res.send({'message': 'Successful login.',
+            "token": jwt.newToken(username, data.Item.role)  
+        });
+            
+    } catch (err){
 
-} catch (err){
-
-    res.statusCode = 500;
-    res.send({'message': `${err}`})
-}
-
+        if (err.name === 'UsernameNotInDatabaseError' || err.name === 'PasswordNotInDatabaseError') {
+        res.statusCode = 400;
+        } else {
+        res.statusCode = 500;
+        }
+        return res.send({
+            "message": err.message
+        });
+    }
 });
-
 
 module.exports = router;

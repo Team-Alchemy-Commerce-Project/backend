@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage"
   },
   "author": "Kristen Alvarez",
   "license": "ISC",
@@ -20,5 +20,8 @@
     "unix-timestamp": "^1.0.2",
     "uuid": "^9.0.0",
     "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "jest": "^29.4.3"
   }
 }

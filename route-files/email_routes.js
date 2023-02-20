@@ -14,10 +14,10 @@ router.post('/password', async (req, res) => {
     sendEmail.sesTest(email, token).then((val) =>{
         console.log('got this back', val)
         res.statusCode = 201;
-        res.send({
+        return res.send({
             "message":"successful"})
     }).catch((err) =>{
-        res.send(err)
+        return res.send(err)
     })
 }else{
     return res.send({
